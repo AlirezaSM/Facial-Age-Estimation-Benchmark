@@ -257,11 +257,13 @@ if __name__ == '__main__':
 
                 if noisy_face_list and fol in [0, 1]:
                     selected_face = noisy_face_list[idx]
-                    print('Im here')
                 else:
                     selected_face = face
 
                 f.write(f"{selected_face[0]},{selected_face[1]},{fol}")
                 for item in selected_face[5:]:
                     f.write(f",{item}")
+                for item in selected_face[5:]:
+                    f.write(f",{item}")
+                f.write(f",{config['training']['base_sigma']}")
                 f.write("\n")

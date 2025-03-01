@@ -8,20 +8,20 @@ Functions:
 
 """
 
-import torch
-import torch.nn as nn
-import torchvision
-import matplotlib.pyplot as plt
-import logging
-import time
 import os
 import copy
-import sys
+import time
+import json
+import random
+import torch
+import logging
 import numpy as np
-# import wandb
+import torchvision
+import torch.nn as nn
+import matplotlib.pyplot as plt
+
 from typing import Dict
 from tqdm import tqdm
-
 
 def eval_model(model: nn.Module,
                config: dict,
@@ -62,7 +62,7 @@ def eval_model(model: nn.Module,
     id = []
 
     # loop over samples from the dataloader
-    for inputs, labels, ids, folders in dataloader:
+    for inputs, labels, ids, folders, means, sigmas in dataloader:
 
         # remember ids of the samples and whether they are a training, validation or test sample (folders 0,1,2)
         id.append(ids)
@@ -77,7 +77,8 @@ def eval_model(model: nn.Module,
         # for each prediction head, compute and remember the posterior
         for head, head_logits in heads.items():
 
-            head_labels = labels[head].to(device)
+            # head_labels = labels[head].to(device)
+            head_labels = torch.round(means).to(device, dtype=torch.int32)
 
             posterior[head].append(model.get_head_posterior(head_logits, head))
             true_label[head].append(head_labels)
@@ -124,6 +125,22 @@ def eval_model(model: nn.Module,
 
     return posterior, predicted_label, true_label, id, folder, error
 
+def update_history(history, ids, parameters):
+    for i, parameter in zip(ids, parameters):
+        if str(i) in history:
+            history[str(i)].append(parameter)
+        else:
+            history[str(i)] = [parameter]
+    
+    return history
+
+def save_history(history, filename: str):
+    data = {
+        fid: [float(x) for x in hist]  # Convert all values to Python floats
+        for fid, hist in history.items()
+    }
+    with open(filename, 'w') as f:
+        json.dump(data, f, indent=4)
 
 def train_model(model: nn.Module,
                 config: dict,
@@ -153,7 +170,7 @@ def train_model(model: nn.Module,
         config['optimizer']['use_amp'])
 
     # visualize validation and training images
-    dry_training(config, dataloaders, output_dir)
+    # dry_training(config, dataloaders, output_dir)
 
     num_epochs = config['optimizer']['num_epochs']
     improve_patience = config['optimizer']['improve_patience']
@@ -190,6 +207,12 @@ def train_model(model: nn.Module,
         best_model_epoch = checkpoint['best_model_epoch']
         log_history = checkpoint['log_history']
         min_val_error = checkpoint['min_val_error']
+        
+        with open(output_dir + 'mean_history.json', 'r') as file:
+            mean_history = json.load(file)
+
+        with open(output_dir + 'sigma_history.json', 'r') as file:
+            sigma_history = json.load(file)
 
         # resend logs to wandb
         # for log in log_history:
@@ -201,16 +224,8 @@ def train_model(model: nn.Module,
         min_val_error = np.Inf
         best_model_epoch = 0
         log_history = []
-
-    # Initialize parameter store if in noisy mode
-    if config['training']['mode'] == 'noisy':
-        from lib.parameter_store import InstanceParameterStore
-        param_store = InstanceParameterStore(base_sigma=config['training']['base_sigma'])
-        train_face_ids = dataloaders['trn'].dataset.id + dataloaders['val'].dataset.id
-        param_store.initialize(train_face_ids,
-                               dataloaders['trn'].dataset.labels['age'] + dataloaders['val'].dataset.labels['age'])
-    else:
-        param_store = None
+        mean_history = {}
+        sigma_history = {}
     
     # Main optimization loop
     for epoch in range(start_epoch, num_epochs):
@@ -242,16 +257,16 @@ def train_model(model: nn.Module,
 
                 n_examples = 0
                 # yoyo = time.time()
-                for inputs, labels, ids, folders in tqdm(dataloaders[phase], bar_format='{desc:<5.5}{percentage:3.0f}%|{bar:10}{r_bar}'):
+                for inputs, labels, ids, folders, means, sigmas in tqdm(dataloaders[phase], bar_format='{desc:<5.5}{percentage:3.0f}%|{bar:10}{r_bar}'):
                     inputs = inputs.to(device)
                     
                     # Retrieve σ and μ for noisy training
-                    if param_store is not None:
-                        sigmas, means = param_store.get_params(ids.cpu().numpy())
-                    else:
-                        sigmas = torch.ones_like(labels['age']) * config['training']['base_sigma']
-                        means = labels['age']
-                    
+                    # if param_store is not None:
+                    #     sigmas, means = param_store.get_params(ids.cpu().numpy())
+                    # else:
+                    #     sigmas = torch.ones_like(labels['age']) * config['training']['base_sigma']
+                    #     means = labels['age']
+
                     sigmas = sigmas.to(device)
                     means = means.to(device)
 
@@ -265,6 +280,7 @@ def train_model(model: nn.Module,
                         for head, head_logits in heads.items():
 
                             head_labels = labels[head].to(device)
+                            # corrected_labels = torch.round(means).to(device=device, dtype=torch.int)
 
                             # evaluate loss function
                             head_loss = model.get_head_loss(
@@ -291,12 +307,33 @@ def train_model(model: nn.Module,
                     # backward + optimize only if in training phase
                     # print('before loss', time.time() - yoyo)
                                             # Update σ and μ for noisy training
-                    if param_store is not None:
-                        with torch.no_grad():
-                            error = torch.abs(predicted_labels - means)
-                            new_sigmas = sigmas + config['training']['alpha'] * (error - sigmas)
-                            new_means = config['training']['beta'] * means + (1 - config['training']['beta']) * predicted_labels
-                            param_store.update(ids.cpu().numpy(), new_sigmas.cpu().numpy(), new_means.cpu().numpy())
+                    # Evaluate best model to get predicted labels before updating means and sigmas
+                    # if config['training']['mode'] == 'noisy' and phase == 'val' and epoch > 9:
+                    #     best_model = copy.deepcopy(model)
+                    #     best_model.load_state_dict(best_model_wts)
+                    #     best_model.eval()
+
+                    #     with torch.no_grad():
+                    #         best_heads = best_model(inputs)
+                    #         best_head_posterior = best_model.get_head_posterior(
+                    #             best_heads[head], head)
+                    #         _, best_predicted_labels = torch.min(
+                    #             torch.matmul(best_head_posterior, loss_matrix[head]), 1)
+
+                    #     with torch.no_grad():
+                    #         error = torch.abs(best_predicted_labels - means)
+
+                    #         # Vectorized computation of new_sigmas and new_means
+                    #         alpha = torch.tensor([config['training']['alpha'][lbl] for lbl in labels['age']], device=device)
+                    #         beta = torch.tensor([config['training']['beta'][lbl] for lbl in labels['age']], device=device)
+
+                    #         new_sigmas = sigmas + alpha * (error - sigmas)
+                    #         new_means = beta * means + (1 - beta) * best_predicted_labels
+
+                    #         dataloaders[phase].dataset.update_parameters(
+                    #             ids.cpu().numpy(), new_means.cpu().numpy(), new_sigmas.cpu().numpy())
+                    mean_history = update_history(mean_history, ids.cpu().numpy(), means.cpu().numpy())
+                    sigma_history = update_history(sigma_history, ids.cpu().numpy(), sigmas.cpu().numpy())
                     
                     if phase == 'trn':
                         optimizer.zero_grad()
@@ -347,6 +384,9 @@ def train_model(model: nn.Module,
                 print(f"Best Epoch: {best_model_epoch}")
                 logging.info(f"Best Epoch: {best_model_epoch}")
 
+            # Update data_splitX.csv files
+            dataloaders[phase].dataset.update_csv_file()
+
         # log elapsed time
         log['elapsed_minutes'] = (time.time() - since)/60
 
@@ -375,9 +415,9 @@ def train_model(model: nn.Module,
         print(f"Checkpoint saved to {checkpoint_file}")
         logging.info(f"Checkpoint saved to {checkpoint_file}")
         
-        if param_store:
-            param_store.save_mean_history(output_dir + "mean_history.json")
-            param_store.save_sigma_history(output_dir + "sigma_history.json")
+        if config['training']['mode'] == 'noisy':
+            save_history(mean_history, output_dir + 'mean_history.json')
+            save_history(sigma_history, output_dir + 'sigma_history.json')
         
         print()
 
@@ -386,8 +426,8 @@ def train_model(model: nn.Module,
         time_elapsed // 60, time_elapsed % 60))
     logging.info('Training complete in {:.0f}m {:.0f}s'.format(
         time_elapsed // 60, time_elapsed % 60))
-    print('Best epoch: {:4f}'.format(best_model_epoch))
-    logging.info('Best epoch: {:4f}'.format(best_model_epoch))
+    print('Best epoch: {:d}'.format(best_model_epoch))
+    logging.info('Best epoch: {:d}'.format(best_model_epoch))
     
 
     # load best model weights
@@ -408,7 +448,7 @@ def dry_training(config,
 
         # get some random training images
         dataiter = iter(dataloaders[phase])
-        images, labels, _, _ = next(dataiter)
+        images, labels, _, _, _, _ = next(dataiter)
 
         # create grid of images
         img_grid = np.transpose(
