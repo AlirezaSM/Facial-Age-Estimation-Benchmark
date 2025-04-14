@@ -334,6 +334,49 @@ def noisy_dldl_v2_loss(logits: torch.Tensor, labels: torch.Tensor, sigmas: torch
 
     return loss
 
+def cjs_loss(logits: torch.Tensor, labels: torch.Tensor, sigmas: torch.Tensor, means: torch.Tensor, sigma: float = 2, lambda_: float = 1):
+    """
+    Computes the loss as defined in Learning Expectation of Label Distribution for Facial Age and Attractiveness Estimation.
+
+    Args:
+        logits (torch.Tensor): Size([batch_size, nr_classes])
+        labels (torch.Tensor): Size([batch_size])
+        sigma (float, optional): Standard deviation of the Gaussian GT label distribution. Defaults to 2.
+        lambda_ (float, optional): Weight of L1 loss. Defaults to 1.
+
+    Returns:
+        torch.Tensor: The computed loss.
+    """
+    batch_size = logits.shape[0]
+    nr_classes = logits.shape[1]
+
+    # Convert logits to probabilities using softmax
+    probas = F.softmax(logits, dim=1)
+
+    # Generate class labels (0, 1, ..., nr_classes-1)
+    class_labels = torch.arange(0, nr_classes, device=labels.device)
+    class_labels = class_labels.unsqueeze(0).expand(batch_size, -1)  # Broadcast to batch size
+
+    # Broadcast ground-truth labels to match the shape of class_labels
+    broadcast_means = means.unsqueeze(1).expand(-1, nr_classes)
+    broadcast_sigmas = sigmas.unsqueeze(1).expand(-1, nr_classes)
+
+    # Generate the ground-truth label distribution using a Gaussian distribution
+    label_distributions = torch.exp(-((class_labels - broadcast_means) ** 2) / (2 * broadcast_sigmas ** 2))
+    label_distributions = label_distributions / label_distributions.sum(dim=1, keepdim=True)  # Normalize
+
+    probas_cdf = torch.cumsum(probas, dim=1)
+    label_distributions_cdf = torch.cumsum(label_distributions, dim=1)
+
+    M = 0.5 * (probas_cdf + label_distributions_cdf)
+    js_div = 0.5 * (F.kl_div(torch.log(probas_cdf + 1e-10), M, reduction='none') +
+                    F.kl_div(torch.log(label_distributions_cdf + 1e-10), M, reduction='none')) 
+    
+    loss = js_div.sum(dim=1).mean()
+
+    return loss
+
+
 
 def soft_labels_loss(logits: torch.tensor, labels: torch.tensor, distance_squared=False):
     """

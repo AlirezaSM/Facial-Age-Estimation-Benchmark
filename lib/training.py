@@ -101,6 +101,32 @@ def eval_model(model: nn.Module,
     error = {'trn': error_tags.copy(), 'val': error_tags.copy(),
              'tst': error_tags.copy()}
 
+    # # Compute the mean absolute error (MAE) class-wise
+    # for i, set in enumerate(['trn', 'val', 'tst']):
+    #     index = torch.squeeze(torch.argwhere(folder == i)).to(device)
+    #     for head in config['heads']:
+    #         set_true_label = torch.index_select(true_label[head['tag']], 0, index)
+    #         set_predicted_label = torch.index_select(predicted_label[head['tag']], 0, index)
+            
+    #         # Compute MAE for each class
+    #         unique_classes = torch.unique(set_true_label)
+    #         class_mae = []
+            
+    #         for cls in unique_classes:
+    #             class_indices = torch.where(set_true_label == cls)[0]
+    #             if len(class_indices) > 0:
+    #                 class_error = torch.mean(
+    #                     loss_matrix[head['tag']][set_true_label[class_indices], set_predicted_label[class_indices]]
+    #                 )
+    #                 class_mae.append(class_error)
+            
+    #         # Compute mean over all class-wise MAEs
+    #         if class_mae:
+    #             error[set][head['tag']] = torch.mean(torch.tensor(class_mae)).cpu().detach().numpy().tolist()
+    #         else:
+    #             error[set][head['tag']] = None
+
+
     # compute the mean error for the different parts
     for i, set in enumerate(['trn', 'val', 'tst']):
         index = torch.squeeze(torch.argwhere(folder == i)).to(device)
@@ -294,6 +320,18 @@ def train_model(model: nn.Module,
                                 torch.matmul(head_posterior, loss_matrix[head]), 1)
                             head_err = torch.mean(
                                 loss_matrix[head][head_labels.data, predicted_labels])
+                            # Compute MAE for each class
+                            # unique_classes = torch.unique(head_labels)
+                            # class_wise_mae = []
+
+                            # for cls in unique_classes:
+                            #     class_indices = (head_labels == cls).nonzero(as_tuple=True)[0]
+                            #     if len(class_indices) > 0:
+                            #         class_mae = torch.mean(loss_matrix[head][head_labels[class_indices], predicted_labels[class_indices]])
+                            #         class_wise_mae.append(class_mae)
+
+                            # # Compute the final MAE as the mean of class-wise MAEs
+                            # head_err = torch.mean(torch.tensor(class_wise_mae))
 
                             # update running average
                             running_loss[head] = n_examples*running_loss[head]/(

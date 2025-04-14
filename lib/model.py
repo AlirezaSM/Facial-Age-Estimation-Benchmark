@@ -74,6 +74,7 @@ class Model(nn.Module):
             (self.head_types[tag] == 'dldl') or \
             (self.head_types[tag] == 'dldl_v2') or \
             (self.head_types[tag] == 'noisy_dldl_v2') or \
+            (self.head_types[tag] == 'cjs') or \
             (self.head_types[tag] == 'unimodal_concentrated') or \
             (self.head_types[tag] == 'soft_labels') or \
                 (self.head_types[tag] == 'mean_variance'):
@@ -139,6 +140,9 @@ class Model(nn.Module):
         
         elif self.head_types[tag] == 'noisy_dldl_v2':
             return noisy_dldl_v2_loss(logits, labels, sigmas=sigmas, means=means)
+        
+        elif self.head_types[tag] == 'cjs':
+            return cjs_loss(logits, labels, sigmas=sigmas, means=means)
 
         elif self.head_types[tag] == 'soft_labels':
             return soft_labels_loss(logits, labels)
@@ -181,6 +185,7 @@ class Model(nn.Module):
             (self.head_types[tag] == 'dldl') or \
             (self.head_types[tag] == 'dldl_v2') or \
             (self.head_types[tag] == 'noisy_dldl_v2') or \
+            (self.head_types[tag] == 'cjs') or \
             (self.head_types[tag] == 'unimodal_concentrated') or \
             (self.head_types[tag] == 'soft_labels') or \
                 (self.head_types[tag] == 'mean_variance'):

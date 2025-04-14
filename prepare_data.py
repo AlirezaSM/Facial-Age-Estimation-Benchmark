@@ -111,6 +111,63 @@ def normalize_img(img, bbox, input_size, input_extension, bbox_extension, return
 
     return out_img
 
+def resize_image(image, input_size):
+    """
+    Resize an image to the specified input size.
+    
+    :param image: The image read using cv2 (numpy array)
+    :param input_size: A list or tuple with two elements [width, height]
+    :return: Resized image as a numpy array
+    """
+    resized_image = cv2.resize(image, (input_size[0], input_size[1]))
+    return resized_image
+
+def crop_and_center_eye(image):
+    """
+    Crop and pad the image so that the eye is centered in a square frame.
+    
+    :param image: The image read using cv2 (numpy array)
+    :return: Cropped and padded square image with the eye centered
+    """
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    _, thresh = cv2.threshold(gray, 10, 255, cv2.THRESH_BINARY)
+    
+    coords = np.column_stack(np.where(thresh > 0))
+    if coords.shape[0] == 0:
+        return image  # Return original if no bright pixels found
+    
+    y_min, x_min = coords.min(axis=0)
+    y_max, x_max = coords.max(axis=0)
+    
+    # Compute the horizontal and vertical diameters
+    horizontal_diameter = x_max - x_min
+    vertical_diameter = y_max - y_min
+    
+    # Determine the side length of the square
+    side_length = max(horizontal_diameter, vertical_diameter)
+    
+    # Compute the center of the eye
+    center_x = (x_min + x_max) // 2
+    center_y = (y_min + y_max) // 2
+    
+    # Determine the crop boundaries
+    x1 = max(0, center_x - side_length // 2)
+    x2 = min(image.shape[1], center_x + side_length // 2)
+    y1 = max(0, center_y - side_length // 2)
+    y2 = min(image.shape[0], center_y + side_length // 2)
+    
+    cropped_image = image[y1:y2, x1:x2]
+    
+    # Pad the image if necessary to ensure it's exactly square
+    pad_top = max(0, (side_length // 2) - (center_y - y1))
+    pad_bottom = max(0, (side_length // 2) - (y2 - center_y))
+    pad_left = max(0, (side_length // 2) - (center_x - x1))
+    pad_right = max(0, (side_length // 2) - (x2 - center_x))
+    
+    final_image = cv2.copyMakeBorder(cropped_image, pad_top, pad_bottom, pad_left, pad_right, cv2.BORDER_CONSTANT, value=[0, 0, 0])
+    
+    return final_image
+
 
 if __name__ == '__main__':
 
@@ -185,20 +242,28 @@ if __name__ == '__main__':
                 local_count += 1
 
                 # load face image
-                in_img = cv2.imread(img_file)
+                # in_img = cv2.imread(img_file)
 
                 # if 'aligned_bbox' in face and len(face['aligned_bbox']) > 0:
                 #     bbox = face['aligned_bbox']
                 # else:
                 #     bbox = face['bbox']
 
-                # # normalize image
+                # normalize image
                 # out_img = normalize_img(
                 #     in_img, bbox, input_size, input_extension, bbox_extension)
 
+                # if config['data']['benchmark'].endswith('DR.yaml'):
+                #     # print("Performing DR dataset preprocessing...")
+                #     # out_img = crop_eye_region(in_img)
+                #     out_img = crop_and_center_eye(in_img)
+                #     out_img = resize_image(out_img, input_size)
+
                 # save it to config['data_dir']/images/img_count.png
                 out_img_path = out_img_dir + f"img{count:07d}.png"
-                cv2.imwrite(out_img_path, in_img)
+                # if not out_img.any():
+                #     out_img = in_img
+                # cv2.imwrite(out_img_path, out_img)
 
                 # put it to face_list
                 face_list.append([count, out_img_path, db_id,

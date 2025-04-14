@@ -508,7 +508,7 @@ def stable_mean_carl_update_function(means, sigmas, pred_labels, posteriors, con
     confidence = torch.max(predicted_probs, dim=1).values
     
     best_predicted_labels = best_predicted_labels - (torch.mean(best_predicted_labels) - rounded_means)
-    best_predicted_labels = torch.clamp(best_predicted_labels, min=0, max=7)
+    best_predicted_labels = torch.clamp(best_predicted_labels, min=int(config['heads'][0]['labels'][0][0]), max=int(config['heads'][0]['labels'][-1][0]))
     best_predicted_labels = torch.round(best_predicted_labels).to(dtype=torch.int)
     
     # Compute class frequencies

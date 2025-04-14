@@ -71,12 +71,12 @@ def update_num_epochs(yaml_file_path, new_epoch):
     print(f"Updated num_epochs to {new_epoch} in {yaml_file_path}")
 
 
-def update_csv_files():
+def update_csv_files(trn_config_name):
     """
     This function reads CSV files and replaces the mean and sigma values for rows
     where the folder value is 1 in one file and 0 in other files.
     """
-    file_names = [f'facebase/data/Adience_256x256_resnet50_imagenet_noisy_dldl_v2/data_split{i}.csv' for i in range(5)]
+    file_names = [f'facebase/data/{trn_config_name}/data_split{i}.csv' for i in range(5)]
     # Read all CSV files and store them in a list
     data_frames = [pd.read_csv(file, header=None) for file in file_names]
 
@@ -156,8 +156,8 @@ def update_parameters(df, ev, config, epoch, pred_hist, update_function):
     noisy_labels = df_valid[3].values  # Noisy labels
     means = df_valid[4].values  # Extract as numpy array
     sigmas = df_valid[5].values  # Extract as numpy array
-    pred_labels = ev['predicted_label']['age'][valid_indices]
-    posteriors = ev['posterior']['age'][valid_indices]
+    pred_labels = ev['predicted_label'][config['heads'][0]['tag']][valid_indices]
+    posteriors = ev['posterior'][config['heads'][0]['tag']][valid_indices]
 
     # Perform updates using the selected function
     new_means, new_sigmas = update_means_sigmas(means, sigmas, noisy_labels,
@@ -237,7 +237,7 @@ if __name__ == "__main__":
                 break
 
         correct_val_labels(logger, cor_config, trn_config_name, epoch, predicted_label_history)
-        update_csv_files()
+        update_csv_files(trn_config_name)
     
         for split in range(5):
             with open(predicted_label_history_path[split], 'w') as f:
