@@ -1,0 +1,696 @@
+2025-03-16 16:47:58,154 [INFO] {'data': {'benchmark': 'facebase/benchmarks/Adience.yaml', 'img_dir': '/media/vision/FastStorage-1/alireza-sm/datasets/', 'output_dir': 'facebase/results/', 'data_dir': 'facebase/data/'}, 'heads': [{'tag': 'age', 'type': 'coral', 'attribute': 'age', 'labels': [[0], [1], [2], [3], [4], [5], [6], [7]], 'weight': 1, 'metric': ['mae', 'cs5'], 'visual_metric': [{'tag': 'mae'}, {'tag': 'bias'}, {'tag': 'prc', 'target_class': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], 'target_class_name': 'child 0-17', 'target_class_prior': [0.1, 0.2, 0.3]}]}], 'model': {'architecture': 'resnet50', 'use_pretrained': True, 'input_size': [256, 256]}, 'optimizer': {'num_workers': 8, 'num_epochs': 50, 'batch_size': 100, 'improve_patience': 50, 'lr': 0.0001, 'betas': [0.9, 0.999], 'eps': 1e-08, 'algo': 'adam', 'use_amp': True}, 'preprocess': {'bbox_extension': [0, 0], 'input_extension': [0.05, 0.05], 'trn': {'path': 'lib/augmentation_configs/256x256/jitter+hflip.json'}, 'val': {'path': 'lib/augmentation_configs/256x256/resize_normalize.json'}}, 'training': {'mode': 'normal', 'base_sigma': 0.75}}
+2025-03-16 16:47:58,164 [INFO] running on: cuda:0
+2025-03-16 16:47:58,513 [INFO] Model(
+  (model): ResNet(
+    (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu): ReLU(inplace=True)
+    (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+    (layer1): Sequential(
+      (0): Bottleneck(
+        (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (layer2): Sequential(
+      (0): Bottleneck(
+        (conv1): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (3): Bottleneck(
+        (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (layer3): Sequential(
+      (0): Bottleneck(
+        (conv1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (3): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (4): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (5): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (layer4): Sequential(
+      (0): Bottleneck(
+        (conv1): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+    (fc): Identity()
+  )
+  (heads): ModuleDict(
+    (age): CoralLayer(
+      (coral_weights): Linear(in_features=2048, out_features=1, bias=False)
+    )
+  )
+)
+2025-03-16 16:47:58,514 [INFO] Number of trn data 11128
+2025-03-16 16:47:58,514 [INFO] Number of val data 3274
+2025-03-16 16:47:58,520 [INFO] Epoch 0/49
+2025-03-16 16:47:58,521 [INFO] ----------------------------------------
+2025-03-16 16:48:18,248 [INFO] [trn phase]
+2025-03-16 16:48:18,248 [INFO] error: 1.6111 age_error:1.6111
+2025-03-16 16:48:18,249 [INFO] loss: 3.4018 age_loss:3.4018
+2025-03-16 16:48:24,848 [INFO] [val phase]
+2025-03-16 16:48:24,848 [INFO] error: 1.6808 age_error:1.6808
+2025-03-16 16:48:24,848 [INFO] loss: 3.6821 age_loss:3.6821
+2025-03-16 16:48:24,848 [INFO] Best Epoch: 0
+2025-03-16 16:48:25,321 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_0.pth
+2025-03-16 16:48:25,321 [INFO] Epoch 1/49
+2025-03-16 16:48:25,321 [INFO] ----------------------------------------
+2025-03-16 16:48:44,012 [INFO] [trn phase]
+2025-03-16 16:48:44,014 [INFO] error: 1.3422 age_error:1.3422
+2025-03-16 16:48:44,014 [INFO] loss: 3.0694 age_loss:3.0694
+2025-03-16 16:48:50,552 [INFO] [val phase]
+2025-03-16 16:48:50,552 [INFO] error: 1.5452 age_error:1.5452
+2025-03-16 16:48:50,552 [INFO] loss: 3.5938 age_loss:3.5938
+2025-03-16 16:48:50,552 [INFO] Best Epoch: 1
+2025-03-16 16:48:51,056 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_1.pth
+2025-03-16 16:48:51,056 [INFO] Epoch 2/49
+2025-03-16 16:48:51,056 [INFO] ----------------------------------------
+2025-03-16 16:49:09,805 [INFO] [trn phase]
+2025-03-16 16:49:09,807 [INFO] error: 1.2670 age_error:1.2670
+2025-03-16 16:49:09,807 [INFO] loss: 2.9802 age_loss:2.9802
+2025-03-16 16:49:16,366 [INFO] [val phase]
+2025-03-16 16:49:16,366 [INFO] error: 1.8030 age_error:1.8030
+2025-03-16 16:49:16,366 [INFO] loss: 3.6965 age_loss:3.6965
+2025-03-16 16:49:16,366 [INFO] Best Epoch: 1
+2025-03-16 16:49:16,864 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_2.pth
+2025-03-16 16:49:16,864 [INFO] Epoch 3/49
+2025-03-16 16:49:16,864 [INFO] ----------------------------------------
+2025-03-16 16:49:35,643 [INFO] [trn phase]
+2025-03-16 16:49:35,646 [INFO] error: 1.2413 age_error:1.2413
+2025-03-16 16:49:35,654 [INFO] loss: 2.9197 age_loss:2.9197
+2025-03-16 16:49:42,225 [INFO] [val phase]
+2025-03-16 16:49:42,225 [INFO] error: 1.5907 age_error:1.5907
+2025-03-16 16:49:42,225 [INFO] loss: 3.5565 age_loss:3.5565
+2025-03-16 16:49:42,225 [INFO] Best Epoch: 1
+2025-03-16 16:49:42,727 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_3.pth
+2025-03-16 16:49:42,727 [INFO] Epoch 4/49
+2025-03-16 16:49:42,727 [INFO] ----------------------------------------
+2025-03-16 16:50:01,409 [INFO] [trn phase]
+2025-03-16 16:50:01,410 [INFO] error: 1.2120 age_error:1.2120
+2025-03-16 16:50:01,410 [INFO] loss: 2.8751 age_loss:2.8751
+2025-03-16 16:50:07,938 [INFO] [val phase]
+2025-03-16 16:50:07,938 [INFO] error: 1.4936 age_error:1.4936
+2025-03-16 16:50:07,938 [INFO] loss: 3.5430 age_loss:3.5430
+2025-03-16 16:50:07,938 [INFO] Best Epoch: 4
+2025-03-16 16:50:08,438 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_4.pth
+2025-03-16 16:50:08,438 [INFO] Epoch 5/49
+2025-03-16 16:50:08,438 [INFO] ----------------------------------------
+2025-03-16 16:50:27,279 [INFO] [trn phase]
+2025-03-16 16:50:27,281 [INFO] error: 1.1589 age_error:1.1589
+2025-03-16 16:50:27,281 [INFO] loss: 2.8447 age_loss:2.8447
+2025-03-16 16:50:33,936 [INFO] [val phase]
+2025-03-16 16:50:33,936 [INFO] error: 1.3974 age_error:1.3974
+2025-03-16 16:50:33,936 [INFO] loss: 3.5021 age_loss:3.5021
+2025-03-16 16:50:33,936 [INFO] Best Epoch: 5
+2025-03-16 16:50:34,445 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_5.pth
+2025-03-16 16:50:34,445 [INFO] Epoch 6/49
+2025-03-16 16:50:34,445 [INFO] ----------------------------------------
+2025-03-16 16:50:53,308 [INFO] [trn phase]
+2025-03-16 16:50:53,311 [INFO] error: 1.1391 age_error:1.1391
+2025-03-16 16:50:53,311 [INFO] loss: 2.8141 age_loss:2.8141
+2025-03-16 16:50:59,920 [INFO] [val phase]
+2025-03-16 16:50:59,920 [INFO] error: 1.6151 age_error:1.6151
+2025-03-16 16:50:59,920 [INFO] loss: 3.5816 age_loss:3.5816
+2025-03-16 16:50:59,920 [INFO] Best Epoch: 5
+2025-03-16 16:51:00,425 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_6.pth
+2025-03-16 16:51:00,426 [INFO] Epoch 7/49
+2025-03-16 16:51:00,426 [INFO] ----------------------------------------
+2025-03-16 16:51:19,628 [INFO] [trn phase]
+2025-03-16 16:51:19,631 [INFO] error: 1.0972 age_error:1.0972
+2025-03-16 16:51:19,631 [INFO] loss: 2.7858 age_loss:2.7858
+2025-03-16 16:51:26,233 [INFO] [val phase]
+2025-03-16 16:51:26,233 [INFO] error: 1.4365 age_error:1.4365
+2025-03-16 16:51:26,233 [INFO] loss: 3.4917 age_loss:3.4917
+2025-03-16 16:51:26,233 [INFO] Best Epoch: 5
+2025-03-16 16:51:26,734 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_7.pth
+2025-03-16 16:51:26,734 [INFO] Epoch 8/49
+2025-03-16 16:51:26,734 [INFO] ----------------------------------------
+2025-03-16 16:51:45,951 [INFO] [trn phase]
+2025-03-16 16:51:45,954 [INFO] error: 1.0616 age_error:1.0616
+2025-03-16 16:51:45,954 [INFO] loss: 2.7667 age_loss:2.7667
+2025-03-16 16:51:52,515 [INFO] [val phase]
+2025-03-16 16:51:52,515 [INFO] error: 1.3439 age_error:1.3439
+2025-03-16 16:51:52,515 [INFO] loss: 3.4831 age_loss:3.4831
+2025-03-16 16:51:52,515 [INFO] Best Epoch: 8
+2025-03-16 16:51:53,015 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_8.pth
+2025-03-16 16:51:53,015 [INFO] Epoch 9/49
+2025-03-16 16:51:53,015 [INFO] ----------------------------------------
+2025-03-16 16:52:12,170 [INFO] [trn phase]
+2025-03-16 16:52:12,173 [INFO] error: 1.0477 age_error:1.0477
+2025-03-16 16:52:12,173 [INFO] loss: 2.7506 age_loss:2.7506
+2025-03-16 16:52:18,734 [INFO] [val phase]
+2025-03-16 16:52:18,734 [INFO] error: 1.4737 age_error:1.4737
+2025-03-16 16:52:18,734 [INFO] loss: 3.5025 age_loss:3.5025
+2025-03-16 16:52:18,734 [INFO] Best Epoch: 8
+2025-03-16 16:52:19,235 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_9.pth
+2025-03-16 16:52:19,235 [INFO] Epoch 10/49
+2025-03-16 16:52:19,235 [INFO] ----------------------------------------
+2025-03-16 16:52:38,259 [INFO] [trn phase]
+2025-03-16 16:52:38,261 [INFO] error: 1.0098 age_error:1.0098
+2025-03-16 16:52:38,261 [INFO] loss: 2.7257 age_loss:2.7257
+2025-03-16 16:52:44,838 [INFO] [val phase]
+2025-03-16 16:52:44,838 [INFO] error: 1.3177 age_error:1.3177
+2025-03-16 16:52:44,838 [INFO] loss: 3.4198 age_loss:3.4198
+2025-03-16 16:52:44,838 [INFO] Best Epoch: 10
+2025-03-16 16:52:45,345 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_10.pth
+2025-03-16 16:52:45,345 [INFO] Epoch 11/49
+2025-03-16 16:52:45,345 [INFO] ----------------------------------------
+2025-03-16 16:53:03,878 [INFO] [trn phase]
+2025-03-16 16:53:03,881 [INFO] error: 0.9749 age_error:0.9749
+2025-03-16 16:53:03,881 [INFO] loss: 2.7036 age_loss:2.7036
+2025-03-16 16:53:10,473 [INFO] [val phase]
+2025-03-16 16:53:10,473 [INFO] error: 1.3656 age_error:1.3656
+2025-03-16 16:53:10,473 [INFO] loss: 3.4125 age_loss:3.4125
+2025-03-16 16:53:10,473 [INFO] Best Epoch: 10
+2025-03-16 16:53:10,980 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_11.pth
+2025-03-16 16:53:10,980 [INFO] Epoch 12/49
+2025-03-16 16:53:10,981 [INFO] ----------------------------------------
+2025-03-16 16:53:29,888 [INFO] [trn phase]
+2025-03-16 16:53:29,891 [INFO] error: 0.9622 age_error:0.9622
+2025-03-16 16:53:29,891 [INFO] loss: 2.6932 age_loss:2.6932
+2025-03-16 16:53:36,549 [INFO] [val phase]
+2025-03-16 16:53:36,549 [INFO] error: 1.1982 age_error:1.1982
+2025-03-16 16:53:36,549 [INFO] loss: 3.3802 age_loss:3.3802
+2025-03-16 16:53:36,549 [INFO] Best Epoch: 12
+2025-03-16 16:53:37,052 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_12.pth
+2025-03-16 16:53:37,052 [INFO] Epoch 13/49
+2025-03-16 16:53:37,052 [INFO] ----------------------------------------
+2025-03-16 16:53:56,037 [INFO] [trn phase]
+2025-03-16 16:53:56,037 [INFO] error: 0.9218 age_error:0.9218
+2025-03-16 16:53:56,037 [INFO] loss: 2.6683 age_loss:2.6683
+2025-03-16 16:54:02,593 [INFO] [val phase]
+2025-03-16 16:54:02,594 [INFO] error: 1.4328 age_error:1.4328
+2025-03-16 16:54:02,594 [INFO] loss: 3.3990 age_loss:3.3990
+2025-03-16 16:54:02,594 [INFO] Best Epoch: 12
+2025-03-16 16:54:03,096 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_13.pth
+2025-03-16 16:54:03,096 [INFO] Epoch 14/49
+2025-03-16 16:54:03,096 [INFO] ----------------------------------------
+2025-03-16 16:54:22,294 [INFO] [trn phase]
+2025-03-16 16:54:22,296 [INFO] error: 0.9026 age_error:0.9026
+2025-03-16 16:54:22,296 [INFO] loss: 2.6489 age_loss:2.6489
+2025-03-16 16:54:28,877 [INFO] [val phase]
+2025-03-16 16:54:28,877 [INFO] error: 1.3577 age_error:1.3577
+2025-03-16 16:54:28,877 [INFO] loss: 3.3578 age_loss:3.3578
+2025-03-16 16:54:28,877 [INFO] Best Epoch: 12
+2025-03-16 16:54:29,381 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_14.pth
+2025-03-16 16:54:29,381 [INFO] Epoch 15/49
+2025-03-16 16:54:29,381 [INFO] ----------------------------------------
+2025-03-16 16:54:48,369 [INFO] [trn phase]
+2025-03-16 16:54:48,370 [INFO] error: 0.8645 age_error:0.8645
+2025-03-16 16:54:48,370 [INFO] loss: 2.6286 age_loss:2.6286
+2025-03-16 16:54:54,911 [INFO] [val phase]
+2025-03-16 16:54:54,911 [INFO] error: 1.2899 age_error:1.2899
+2025-03-16 16:54:54,911 [INFO] loss: 3.3499 age_loss:3.3499
+2025-03-16 16:54:54,912 [INFO] Best Epoch: 12
+2025-03-16 16:54:55,482 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_15.pth
+2025-03-16 16:54:55,483 [INFO] Epoch 16/49
+2025-03-16 16:54:55,483 [INFO] ----------------------------------------
+2025-03-16 16:55:14,654 [INFO] [trn phase]
+2025-03-16 16:55:14,656 [INFO] error: 0.8501 age_error:0.8501
+2025-03-16 16:55:14,656 [INFO] loss: 2.6135 age_loss:2.6135
+2025-03-16 16:55:21,291 [INFO] [val phase]
+2025-03-16 16:55:21,291 [INFO] error: 1.1930 age_error:1.1930
+2025-03-16 16:55:21,291 [INFO] loss: 3.3244 age_loss:3.3244
+2025-03-16 16:55:21,291 [INFO] Best Epoch: 16
+2025-03-16 16:55:21,794 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_16.pth
+2025-03-16 16:55:21,794 [INFO] Epoch 17/49
+2025-03-16 16:55:21,794 [INFO] ----------------------------------------
+2025-03-16 16:55:40,556 [INFO] [trn phase]
+2025-03-16 16:55:40,558 [INFO] error: 0.8639 age_error:0.8639
+2025-03-16 16:55:40,559 [INFO] loss: 2.6494 age_loss:2.6494
+2025-03-16 16:55:47,269 [INFO] [val phase]
+2025-03-16 16:55:47,269 [INFO] error: 1.3644 age_error:1.3644
+2025-03-16 16:55:47,269 [INFO] loss: 3.3839 age_loss:3.3839
+2025-03-16 16:55:47,269 [INFO] Best Epoch: 16
+2025-03-16 16:55:47,771 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_17.pth
+2025-03-16 16:55:47,771 [INFO] Epoch 18/49
+2025-03-16 16:55:47,771 [INFO] ----------------------------------------
+2025-03-16 16:56:06,562 [INFO] [trn phase]
+2025-03-16 16:56:06,565 [INFO] error: 0.8419 age_error:0.8419
+2025-03-16 16:56:06,565 [INFO] loss: 2.5979 age_loss:2.5979
+2025-03-16 16:56:13,155 [INFO] [val phase]
+2025-03-16 16:56:13,155 [INFO] error: 1.1765 age_error:1.1765
+2025-03-16 16:56:13,155 [INFO] loss: 3.3172 age_loss:3.3172
+2025-03-16 16:56:13,155 [INFO] Best Epoch: 18
+2025-03-16 16:56:13,656 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_18.pth
+2025-03-16 16:56:13,656 [INFO] Epoch 19/49
+2025-03-16 16:56:13,656 [INFO] ----------------------------------------
+2025-03-16 16:56:32,395 [INFO] [trn phase]
+2025-03-16 16:56:32,397 [INFO] error: 0.8055 age_error:0.8055
+2025-03-16 16:56:32,397 [INFO] loss: 2.5760 age_loss:2.5760
+2025-03-16 16:56:38,946 [INFO] [val phase]
+2025-03-16 16:56:38,946 [INFO] error: 1.4087 age_error:1.4087
+2025-03-16 16:56:38,946 [INFO] loss: 3.3503 age_loss:3.3503
+2025-03-16 16:56:38,946 [INFO] Best Epoch: 18
+2025-03-16 16:56:39,458 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_19.pth
+2025-03-16 16:56:39,458 [INFO] Epoch 20/49
+2025-03-16 16:56:39,458 [INFO] ----------------------------------------
+2025-03-16 16:56:58,398 [INFO] [trn phase]
+2025-03-16 16:56:58,401 [INFO] error: 0.7805 age_error:0.7805
+2025-03-16 16:56:58,401 [INFO] loss: 2.5511 age_loss:2.5511
+2025-03-16 16:57:04,977 [INFO] [val phase]
+2025-03-16 16:57:04,977 [INFO] error: 1.2996 age_error:1.2996
+2025-03-16 16:57:04,978 [INFO] loss: 3.2815 age_loss:3.2815
+2025-03-16 16:57:04,978 [INFO] Best Epoch: 18
+2025-03-16 16:57:05,478 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_20.pth
+2025-03-16 16:57:05,478 [INFO] Epoch 21/49
+2025-03-16 16:57:05,478 [INFO] ----------------------------------------
+2025-03-16 16:57:24,366 [INFO] [trn phase]
+2025-03-16 16:57:24,368 [INFO] error: 0.7592 age_error:0.7592
+2025-03-16 16:57:24,368 [INFO] loss: 2.5323 age_loss:2.5323
+2025-03-16 16:57:30,952 [INFO] [val phase]
+2025-03-16 16:57:30,953 [INFO] error: 1.2392 age_error:1.2392
+2025-03-16 16:57:30,953 [INFO] loss: 3.2611 age_loss:3.2611
+2025-03-16 16:57:30,953 [INFO] Best Epoch: 18
+2025-03-16 16:57:31,455 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_21.pth
+2025-03-16 16:57:31,455 [INFO] Epoch 22/49
+2025-03-16 16:57:31,455 [INFO] ----------------------------------------
+2025-03-16 16:57:50,188 [INFO] [trn phase]
+2025-03-16 16:57:50,188 [INFO] error: 0.7460 age_error:0.7460
+2025-03-16 16:57:50,188 [INFO] loss: 2.5162 age_loss:2.5162
+2025-03-16 16:57:56,780 [INFO] [val phase]
+2025-03-16 16:57:56,780 [INFO] error: 1.1582 age_error:1.1582
+2025-03-16 16:57:56,780 [INFO] loss: 3.2289 age_loss:3.2289
+2025-03-16 16:57:56,780 [INFO] Best Epoch: 22
+2025-03-16 16:57:57,288 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_22.pth
+2025-03-16 16:57:57,288 [INFO] Epoch 23/49
+2025-03-16 16:57:57,288 [INFO] ----------------------------------------
+2025-03-16 16:58:16,151 [INFO] [trn phase]
+2025-03-16 16:58:16,154 [INFO] error: 0.7348 age_error:0.7348
+2025-03-16 16:58:16,154 [INFO] loss: 2.5036 age_loss:2.5036
+2025-03-16 16:58:22,704 [INFO] [val phase]
+2025-03-16 16:58:22,704 [INFO] error: 1.1613 age_error:1.1613
+2025-03-16 16:58:22,704 [INFO] loss: 3.2035 age_loss:3.2035
+2025-03-16 16:58:22,704 [INFO] Best Epoch: 22
+2025-03-16 16:58:23,206 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_23.pth
+2025-03-16 16:58:23,206 [INFO] Epoch 24/49
+2025-03-16 16:58:23,206 [INFO] ----------------------------------------
+2025-03-16 16:58:42,096 [INFO] [trn phase]
+2025-03-16 16:58:42,099 [INFO] error: 0.7181 age_error:0.7181
+2025-03-16 16:58:42,099 [INFO] loss: 2.4845 age_loss:2.4845
+2025-03-16 16:58:48,675 [INFO] [val phase]
+2025-03-16 16:58:48,675 [INFO] error: 1.1759 age_error:1.1759
+2025-03-16 16:58:48,675 [INFO] loss: 3.2289 age_loss:3.2289
+2025-03-16 16:58:48,675 [INFO] Best Epoch: 22
+2025-03-16 16:58:49,180 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_24.pth
+2025-03-16 16:58:49,180 [INFO] Epoch 25/49
+2025-03-16 16:58:49,180 [INFO] ----------------------------------------
+2025-03-16 16:59:08,120 [INFO] [trn phase]
+2025-03-16 16:59:08,121 [INFO] error: 0.7051 age_error:0.7051
+2025-03-16 16:59:08,121 [INFO] loss: 2.4674 age_loss:2.4674
+2025-03-16 16:59:14,677 [INFO] [val phase]
+2025-03-16 16:59:14,677 [INFO] error: 1.1249 age_error:1.1249
+2025-03-16 16:59:14,677 [INFO] loss: 3.2064 age_loss:3.2064
+2025-03-16 16:59:14,677 [INFO] Best Epoch: 25
+2025-03-16 16:59:15,186 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_25.pth
+2025-03-16 16:59:15,186 [INFO] Epoch 26/49
+2025-03-16 16:59:15,186 [INFO] ----------------------------------------
+2025-03-16 16:59:33,822 [INFO] [trn phase]
+2025-03-16 16:59:33,824 [INFO] error: 0.6915 age_error:0.6915
+2025-03-16 16:59:33,824 [INFO] loss: 2.4520 age_loss:2.4520
+2025-03-16 16:59:40,439 [INFO] [val phase]
+2025-03-16 16:59:40,439 [INFO] error: 1.1539 age_error:1.1539
+2025-03-16 16:59:40,439 [INFO] loss: 3.2077 age_loss:3.2077
+2025-03-16 16:59:40,439 [INFO] Best Epoch: 25
+2025-03-16 16:59:40,939 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_26.pth
+2025-03-16 16:59:40,939 [INFO] Epoch 27/49
+2025-03-16 16:59:40,939 [INFO] ----------------------------------------
+2025-03-16 16:59:59,708 [INFO] [trn phase]
+2025-03-16 16:59:59,710 [INFO] error: 0.6914 age_error:0.6914
+2025-03-16 16:59:59,710 [INFO] loss: 2.4400 age_loss:2.4400
+2025-03-16 17:00:06,293 [INFO] [val phase]
+2025-03-16 17:00:06,293 [INFO] error: 1.1570 age_error:1.1570
+2025-03-16 17:00:06,293 [INFO] loss: 3.1859 age_loss:3.1859
+2025-03-16 17:00:06,294 [INFO] Best Epoch: 25
+2025-03-16 17:00:06,795 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_27.pth
+2025-03-16 17:00:06,795 [INFO] Epoch 28/49
+2025-03-16 17:00:06,795 [INFO] ----------------------------------------
+2025-03-16 17:00:25,482 [INFO] [trn phase]
+2025-03-16 17:00:25,485 [INFO] error: 0.6839 age_error:0.6839
+2025-03-16 17:00:25,485 [INFO] loss: 2.4235 age_loss:2.4235
+2025-03-16 17:00:32,076 [INFO] [val phase]
+2025-03-16 17:00:32,076 [INFO] error: 1.0797 age_error:1.0797
+2025-03-16 17:00:32,076 [INFO] loss: 3.1573 age_loss:3.1573
+2025-03-16 17:00:32,076 [INFO] Best Epoch: 28
+2025-03-16 17:00:32,587 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_28.pth
+2025-03-16 17:00:32,587 [INFO] Epoch 29/49
+2025-03-16 17:00:32,587 [INFO] ----------------------------------------
+2025-03-16 17:00:51,550 [INFO] [trn phase]
+2025-03-16 17:00:51,552 [INFO] error: 0.6755 age_error:0.6755
+2025-03-16 17:00:51,552 [INFO] loss: 2.4081 age_loss:2.4081
+2025-03-16 17:00:58,107 [INFO] [val phase]
+2025-03-16 17:00:58,107 [INFO] error: 1.0984 age_error:1.0984
+2025-03-16 17:00:58,107 [INFO] loss: 3.1199 age_loss:3.1199
+2025-03-16 17:00:58,107 [INFO] Best Epoch: 28
+2025-03-16 17:00:58,620 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_29.pth
+2025-03-16 17:00:58,620 [INFO] Epoch 30/49
+2025-03-16 17:00:58,620 [INFO] ----------------------------------------
+2025-03-16 17:01:17,417 [INFO] [trn phase]
+2025-03-16 17:01:17,417 [INFO] error: 0.6724 age_error:0.6724
+2025-03-16 17:01:17,417 [INFO] loss: 2.3940 age_loss:2.3940
+2025-03-16 17:01:23,977 [INFO] [val phase]
+2025-03-16 17:01:23,977 [INFO] error: 1.0819 age_error:1.0819
+2025-03-16 17:01:23,977 [INFO] loss: 3.1291 age_loss:3.1291
+2025-03-16 17:01:23,977 [INFO] Best Epoch: 28
+2025-03-16 17:01:24,480 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_30.pth
+2025-03-16 17:01:24,481 [INFO] Epoch 31/49
+2025-03-16 17:01:24,481 [INFO] ----------------------------------------
+2025-03-16 17:01:43,534 [INFO] [trn phase]
+2025-03-16 17:01:43,537 [INFO] error: 0.6707 age_error:0.6707
+2025-03-16 17:01:43,537 [INFO] loss: 2.3788 age_loss:2.3788
+2025-03-16 17:01:50,138 [INFO] [val phase]
+2025-03-16 17:01:50,138 [INFO] error: 1.1197 age_error:1.1197
+2025-03-16 17:01:50,138 [INFO] loss: 3.1291 age_loss:3.1291
+2025-03-16 17:01:50,138 [INFO] Best Epoch: 28
+2025-03-16 17:01:50,644 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_31.pth
+2025-03-16 17:01:50,644 [INFO] Epoch 32/49
+2025-03-16 17:01:50,644 [INFO] ----------------------------------------
+2025-03-16 17:02:09,400 [INFO] [trn phase]
+2025-03-16 17:02:09,402 [INFO] error: 0.6630 age_error:0.6630
+2025-03-16 17:02:09,402 [INFO] loss: 2.3713 age_loss:2.3713
+2025-03-16 17:02:15,990 [INFO] [val phase]
+2025-03-16 17:02:15,990 [INFO] error: 1.1066 age_error:1.1066
+2025-03-16 17:02:15,990 [INFO] loss: 3.1667 age_loss:3.1667
+2025-03-16 17:02:15,990 [INFO] Best Epoch: 28
+2025-03-16 17:02:16,493 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_32.pth
+2025-03-16 17:02:16,493 [INFO] Epoch 33/49
+2025-03-16 17:02:16,493 [INFO] ----------------------------------------
+2025-03-16 17:02:35,347 [INFO] [trn phase]
+2025-03-16 17:02:35,349 [INFO] error: 0.6605 age_error:0.6605
+2025-03-16 17:02:35,350 [INFO] loss: 2.3575 age_loss:2.3575
+2025-03-16 17:02:41,915 [INFO] [val phase]
+2025-03-16 17:02:41,915 [INFO] error: 1.0916 age_error:1.0916
+2025-03-16 17:02:41,915 [INFO] loss: 3.1465 age_loss:3.1465
+2025-03-16 17:02:41,915 [INFO] Best Epoch: 28
+2025-03-16 17:02:42,437 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_33.pth
+2025-03-16 17:02:42,437 [INFO] Epoch 34/49
+2025-03-16 17:02:42,437 [INFO] ----------------------------------------
+2025-03-16 17:03:01,242 [INFO] [trn phase]
+2025-03-16 17:03:01,245 [INFO] error: 0.6536 age_error:0.6536
+2025-03-16 17:03:01,245 [INFO] loss: 2.3471 age_loss:2.3471
+2025-03-16 17:03:07,843 [INFO] [val phase]
+2025-03-16 17:03:07,844 [INFO] error: 1.0504 age_error:1.0504
+2025-03-16 17:03:07,844 [INFO] loss: 3.1526 age_loss:3.1526
+2025-03-16 17:03:07,844 [INFO] Best Epoch: 34
+2025-03-16 17:03:08,342 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_34.pth
+2025-03-16 17:03:08,342 [INFO] Epoch 35/49
+2025-03-16 17:03:08,342 [INFO] ----------------------------------------
+2025-03-16 17:03:27,147 [INFO] [trn phase]
+2025-03-16 17:03:27,149 [INFO] error: 0.6485 age_error:0.6485
+2025-03-16 17:03:27,150 [INFO] loss: 2.3294 age_loss:2.3294
+2025-03-16 17:03:33,756 [INFO] [val phase]
+2025-03-16 17:03:33,756 [INFO] error: 1.0733 age_error:1.0733
+2025-03-16 17:03:33,756 [INFO] loss: 3.0937 age_loss:3.0937
+2025-03-16 17:03:33,756 [INFO] Best Epoch: 34
+2025-03-16 17:03:34,265 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_35.pth
+2025-03-16 17:03:34,265 [INFO] Epoch 36/49
+2025-03-16 17:03:34,265 [INFO] ----------------------------------------
+2025-03-16 17:03:53,129 [INFO] [trn phase]
+2025-03-16 17:03:53,130 [INFO] error: 0.6455 age_error:0.6455
+2025-03-16 17:03:53,130 [INFO] loss: 2.3143 age_loss:2.3143
+2025-03-16 17:03:59,689 [INFO] [val phase]
+2025-03-16 17:03:59,689 [INFO] error: 1.0284 age_error:1.0284
+2025-03-16 17:03:59,689 [INFO] loss: 3.0946 age_loss:3.0946
+2025-03-16 17:03:59,689 [INFO] Best Epoch: 36
+2025-03-16 17:04:00,206 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_36.pth
+2025-03-16 17:04:00,206 [INFO] Epoch 37/49
+2025-03-16 17:04:00,206 [INFO] ----------------------------------------
+2025-03-16 17:04:19,303 [INFO] [trn phase]
+2025-03-16 17:04:19,304 [INFO] error: 0.6456 age_error:0.6456
+2025-03-16 17:04:19,304 [INFO] loss: 2.2987 age_loss:2.2987
+2025-03-16 17:04:25,865 [INFO] [val phase]
+2025-03-16 17:04:25,865 [INFO] error: 1.0434 age_error:1.0434
+2025-03-16 17:04:25,865 [INFO] loss: 3.0968 age_loss:3.0968
+2025-03-16 17:04:25,865 [INFO] Best Epoch: 36
+2025-03-16 17:04:26,368 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_37.pth
+2025-03-16 17:04:26,368 [INFO] Epoch 38/49
+2025-03-16 17:04:26,368 [INFO] ----------------------------------------
+2025-03-16 17:04:45,134 [INFO] [trn phase]
+2025-03-16 17:04:45,136 [INFO] error: 0.6470 age_error:0.6470
+2025-03-16 17:04:45,136 [INFO] loss: 2.2854 age_loss:2.2854
+2025-03-16 17:04:51,680 [INFO] [val phase]
+2025-03-16 17:04:51,681 [INFO] error: 1.0473 age_error:1.0473
+2025-03-16 17:04:51,681 [INFO] loss: 3.0303 age_loss:3.0303
+2025-03-16 17:04:51,681 [INFO] Best Epoch: 36
+2025-03-16 17:04:52,186 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_38.pth
+2025-03-16 17:04:52,186 [INFO] Epoch 39/49
+2025-03-16 17:04:52,186 [INFO] ----------------------------------------
+2025-03-16 17:05:10,903 [INFO] [trn phase]
+2025-03-16 17:05:10,906 [INFO] error: 0.6390 age_error:0.6390
+2025-03-16 17:05:10,906 [INFO] loss: 2.2815 age_loss:2.2815
+2025-03-16 17:05:17,526 [INFO] [val phase]
+2025-03-16 17:05:17,526 [INFO] error: 0.9957 age_error:0.9957
+2025-03-16 17:05:17,526 [INFO] loss: 3.0170 age_loss:3.0170
+2025-03-16 17:05:17,526 [INFO] Best Epoch: 39
+2025-03-16 17:05:18,035 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_39.pth
+2025-03-16 17:05:18,035 [INFO] Epoch 40/49
+2025-03-16 17:05:18,035 [INFO] ----------------------------------------
+2025-03-16 17:05:37,346 [INFO] [trn phase]
+2025-03-16 17:05:37,349 [INFO] error: 0.6334 age_error:0.6334
+2025-03-16 17:05:37,349 [INFO] loss: 2.2643 age_loss:2.2643
+2025-03-16 17:05:43,918 [INFO] [val phase]
+2025-03-16 17:05:43,918 [INFO] error: 1.0394 age_error:1.0394
+2025-03-16 17:05:43,918 [INFO] loss: 3.0202 age_loss:3.0202
+2025-03-16 17:05:43,918 [INFO] Best Epoch: 39
+2025-03-16 17:05:44,420 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_40.pth
+2025-03-16 17:05:44,420 [INFO] Epoch 41/49
+2025-03-16 17:05:44,420 [INFO] ----------------------------------------
+2025-03-16 17:06:04,311 [INFO] [trn phase]
+2025-03-16 17:06:04,311 [INFO] error: 0.6285 age_error:0.6285
+2025-03-16 17:06:04,311 [INFO] loss: 2.2501 age_loss:2.2501
+2025-03-16 17:06:11,096 [INFO] [val phase]
+2025-03-16 17:06:11,096 [INFO] error: 0.9927 age_error:0.9927
+2025-03-16 17:06:11,096 [INFO] loss: 2.9999 age_loss:2.9999
+2025-03-16 17:06:11,096 [INFO] Best Epoch: 41
+2025-03-16 17:06:11,611 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_41.pth
+2025-03-16 17:06:11,611 [INFO] Epoch 42/49
+2025-03-16 17:06:11,611 [INFO] ----------------------------------------
+2025-03-16 17:06:31,260 [INFO] [trn phase]
+2025-03-16 17:06:31,263 [INFO] error: 0.6254 age_error:0.6254
+2025-03-16 17:06:31,263 [INFO] loss: 2.2392 age_loss:2.2392
+2025-03-16 17:06:38,018 [INFO] [val phase]
+2025-03-16 17:06:38,018 [INFO] error: 1.0290 age_error:1.0290
+2025-03-16 17:06:38,018 [INFO] loss: 2.9963 age_loss:2.9963
+2025-03-16 17:06:38,019 [INFO] Best Epoch: 41
+2025-03-16 17:06:38,531 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_42.pth
+2025-03-16 17:06:38,531 [INFO] Epoch 43/49
+2025-03-16 17:06:38,531 [INFO] ----------------------------------------
+2025-03-16 17:06:58,104 [INFO] [trn phase]
+2025-03-16 17:06:58,108 [INFO] error: 0.6148 age_error:0.6148
+2025-03-16 17:06:58,108 [INFO] loss: 2.2325 age_loss:2.2325
+2025-03-16 17:07:04,829 [INFO] [val phase]
+2025-03-16 17:07:04,829 [INFO] error: 1.0446 age_error:1.0446
+2025-03-16 17:07:04,829 [INFO] loss: 3.0141 age_loss:3.0141
+2025-03-16 17:07:04,829 [INFO] Best Epoch: 41
+2025-03-16 17:07:05,337 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_43.pth
+2025-03-16 17:07:05,337 [INFO] Epoch 44/49
+2025-03-16 17:07:05,337 [INFO] ----------------------------------------
+2025-03-16 17:07:24,711 [INFO] [trn phase]
+2025-03-16 17:07:24,713 [INFO] error: 0.6107 age_error:0.6107
+2025-03-16 17:07:24,713 [INFO] loss: 2.2167 age_loss:2.2167
+2025-03-16 17:07:31,249 [INFO] [val phase]
+2025-03-16 17:07:31,249 [INFO] error: 0.9820 age_error:0.9820
+2025-03-16 17:07:31,249 [INFO] loss: 2.9660 age_loss:2.9660
+2025-03-16 17:07:31,249 [INFO] Best Epoch: 44
+2025-03-16 17:07:31,756 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_44.pth
+2025-03-16 17:07:31,756 [INFO] Epoch 45/49
+2025-03-16 17:07:31,756 [INFO] ----------------------------------------
+2025-03-16 17:07:50,894 [INFO] [trn phase]
+2025-03-16 17:07:50,898 [INFO] error: 0.6101 age_error:0.6101
+2025-03-16 17:07:50,898 [INFO] loss: 2.1976 age_loss:2.1976
+2025-03-16 17:07:57,448 [INFO] [val phase]
+2025-03-16 17:07:57,448 [INFO] error: 1.0223 age_error:1.0223
+2025-03-16 17:07:57,448 [INFO] loss: 2.9645 age_loss:2.9645
+2025-03-16 17:07:57,448 [INFO] Best Epoch: 44
+2025-03-16 17:07:57,959 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_45.pth
+2025-03-16 17:07:57,959 [INFO] Epoch 46/49
+2025-03-16 17:07:57,959 [INFO] ----------------------------------------
+2025-03-16 17:08:17,009 [INFO] [trn phase]
+2025-03-16 17:08:17,009 [INFO] error: 0.6216 age_error:0.6216
+2025-03-16 17:08:17,009 [INFO] loss: 2.1869 age_loss:2.1869
+2025-03-16 17:08:23,545 [INFO] [val phase]
+2025-03-16 17:08:23,545 [INFO] error: 1.0403 age_error:1.0403
+2025-03-16 17:08:23,545 [INFO] loss: 2.9793 age_loss:2.9793
+2025-03-16 17:08:23,545 [INFO] Best Epoch: 44
+2025-03-16 17:08:24,054 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_46.pth
+2025-03-16 17:08:24,054 [INFO] Epoch 47/49
+2025-03-16 17:08:24,054 [INFO] ----------------------------------------
+2025-03-16 17:08:43,581 [INFO] [trn phase]
+2025-03-16 17:08:43,584 [INFO] error: 0.6127 age_error:0.6127
+2025-03-16 17:08:43,584 [INFO] loss: 2.1728 age_loss:2.1728
+2025-03-16 17:08:50,240 [INFO] [val phase]
+2025-03-16 17:08:50,240 [INFO] error: 0.9893 age_error:0.9893
+2025-03-16 17:08:50,240 [INFO] loss: 2.9286 age_loss:2.9286
+2025-03-16 17:08:50,240 [INFO] Best Epoch: 44
+2025-03-16 17:08:50,754 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_47.pth
+2025-03-16 17:08:50,754 [INFO] Epoch 48/49
+2025-03-16 17:08:50,754 [INFO] ----------------------------------------
+2025-03-16 17:09:10,296 [INFO] [trn phase]
+2025-03-16 17:09:10,298 [INFO] error: 0.6086 age_error:0.6086
+2025-03-16 17:09:10,298 [INFO] loss: 2.1585 age_loss:2.1585
+2025-03-16 17:09:17,129 [INFO] [val phase]
+2025-03-16 17:09:17,129 [INFO] error: 0.9924 age_error:0.9924
+2025-03-16 17:09:17,129 [INFO] loss: 2.9194 age_loss:2.9194
+2025-03-16 17:09:17,129 [INFO] Best Epoch: 44
+2025-03-16 17:09:17,642 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_48.pth
+2025-03-16 17:09:17,642 [INFO] Epoch 49/49
+2025-03-16 17:09:17,642 [INFO] ----------------------------------------
+2025-03-16 17:09:37,255 [INFO] [trn phase]
+2025-03-16 17:09:37,258 [INFO] error: 0.5944 age_error:0.5944
+2025-03-16 17:09:37,258 [INFO] loss: 2.1538 age_loss:2.1538
+2025-03-16 17:09:44,084 [INFO] [val phase]
+2025-03-16 17:09:44,084 [INFO] error: 1.0596 age_error:1.0596
+2025-03-16 17:09:44,084 [INFO] loss: 2.9475 age_loss:2.9475
+2025-03-16 17:09:44,084 [INFO] Best Epoch: 44
+2025-03-16 17:09:44,595 [INFO] Checkpoint saved to facebase/results/Adience_256x256_resnet50_imagenet_coral/split2/checkpoint_49.pth
+2025-03-16 17:09:44,596 [INFO] Training complete in 21m 46s
+2025-03-16 17:09:44,596 [INFO] Best epoch: 44
+2025-03-16 17:10:14,485 [INFO] Model evalution:
+2025-03-16 17:10:14,485 [INFO] [trn set]
+2025-03-16 17:10:14,485 [INFO] age (mae): 0.5471
+2025-03-16 17:10:14,485 [INFO] [val set]
+2025-03-16 17:10:14,485 [INFO] age (mae): 0.9826
+2025-03-16 17:10:14,485 [INFO] [tst set]
+2025-03-16 17:10:14,485 [INFO] age (mae): 0.6812
