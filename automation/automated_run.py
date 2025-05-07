@@ -14,11 +14,12 @@ config_paths = [
     # "/media/vision/FastStorage-1/alireza-sm/Facial-Age-Estimation-Benchmark/facebase/configs/other/Adience_256x256_resnet50_imagenet_mean_variance.yaml",
     # "/media/vision/FastStorage-1/alireza-sm/Facial-Age-Estimation-Benchmark/facebase/configs/other/Adience_256x256_resnet50_imagenet_coral.yaml",
     # "/media/vision/FastStorage-1/alireza-sm/Facial-Age-Estimation-Benchmark/facebase/configs/other/Adience_256x256_resnet50_imagenet_soft_labels.yaml",
-    # "facebase/configs/other/Adience_256x256_resnet50_imagenet_noisy_dldl_v2.yaml",
+    "facebase/configs/other/Adience_256x256_resnet50_imagenet_noisy_dldl_v2.yaml",
     # "facebase/configs/other/Adience_256x256_resnet50_imagenet_dldl_v2.yaml",
     # "facebase/configs/other/Adience_256x256_resnet50_imagenet_cjs.yaml",
     # "facebase/configs/other/Adience_256x256_resnet50_imagenet_coral.yaml",
-    "facebase/configs/other/DR_256x256_resnet50_imagenet_dldl_v2.yaml"
+    # "facebase/configs/other/DR_256x256_resnet50_imagenet_dldl_v2.yaml"
+    # "facebase/configs/other/DRUnder_256x256_resnet50_imagenet_dldl_v2.yaml"
 ]
 
 # List of seeds to try

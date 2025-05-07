@@ -253,7 +253,7 @@ if __name__ == '__main__':
                 # out_img = normalize_img(
                 #     in_img, bbox, input_size, input_extension, bbox_extension)
 
-                # if config['data']['benchmark'].endswith('DR.yaml'):
+                # if config['data']['benchmark'].endswith('DR.yaml') or config['data']['benchmark'].endswith('DRUnder.yaml'):
                 #     # print("Performing DR dataset preprocessing...")
                 #     # out_img = crop_eye_region(in_img)
                 #     out_img = crop_and_center_eye(in_img)
