@@ -4,11 +4,11 @@ import os
 
 data_root = '/media/vision/FastStorage-1/alireza-sm/Facial-Age-Estimation-Benchmark/facebase/data'
 results_root = '/media/vision/FastStorage-1/alireza-sm/Facial-Age-Estimation-Benchmark/facebase/results'
-base_name = 'Adience_256x256_resnet50_imagenet_noisy_dldl_v2'
-reference_name = 'Adience_256x256_resnet50_imagenet_noisy_dldl_v2_reference'
-config_path = 'facebase/configs/other/Adience_256x256_resnet50_imagenet_noisy_dldl_v2.yaml'
+base_name = 'DRUnder_256x256_resnet50_imagenet_noisy_dldl_v2'
+reference_name = 'DRUnder_256x256_resnet50_imagenet_noisy_dldl_v2_reference'
+config_path = 'facebase/configs/other/DRUnder_256x256_resnet50_imagenet_noisy_dldl_v2.yaml'
 
-base_command = "python noise_correction/sync_correction.py --config noise_correction/Adience.yaml"
+base_command = "python noise_correction/sync_correction.py --config noise_correction/DRUnder.yaml"
 
 def update_alpha_beta(yaml_file_path, alpha, beta):
     # Read the YAML file as plain text
@@ -43,11 +43,11 @@ def update_alpha_beta(yaml_file_path, alpha, beta):
 
     print(f"Updated alpha and beta to {alpha} and {beta} in {yaml_file_path}")
 
-# alphas = [0.2, 0.5, 0.8]
-# betas = [0.2, 0.5, 0.8]
+alphas = [0.2, 0.5, 0.8]
+betas = [0.2, 0.5, 0.8]
 
-alphas = [0.1]
-betas = [0.9]
+# alphas = [0.1]
+# betas = [0.9]
 
 
 # Loop through each combination of config path and seed
