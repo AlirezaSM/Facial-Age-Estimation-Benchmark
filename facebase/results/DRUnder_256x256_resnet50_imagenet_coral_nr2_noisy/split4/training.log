@@ -1,0 +1,696 @@
+2025-05-08 03:52:09,668 [INFO] {'data': {'benchmark': 'facebase/benchmarks/DRUnder.yaml', 'img_dir': '../datasets/', 'output_dir': 'facebase/results/', 'data_dir': 'facebase/data/'}, 'heads': [{'tag': 'level', 'type': 'coral', 'attribute': 'level', 'labels': [[0], [1], [2], [3], [4]], 'weight': 1, 'metric': ['mae', 'cs5'], 'visual_metric': [{'tag': 'mae'}, {'tag': 'bias'}, {'tag': 'prc', 'target_class': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], 'target_class_name': 'child 0-17', 'target_class_prior': [0.1, 0.2, 0.3]}]}], 'model': {'architecture': 'resnet50', 'use_pretrained': True, 'input_size': [256, 256]}, 'optimizer': {'num_workers': 8, 'num_epochs': 50, 'batch_size': 100, 'improve_patience': 50, 'lr': 0.0005, 'betas': [0.9, 0.999], 'eps': 1e-08, 'algo': 'adam', 'use_amp': True}, 'preprocess': {'bbox_extension': [0, 0], 'input_extension': [0.05, 0.05], 'trn': {'path': 'lib/augmentation_configs/256x256/jitter+hflip.json'}, 'val': {'path': 'lib/augmentation_configs/256x256/resize_normalize.json'}}, 'training': {'mode': 'normal', 'base_sigma': 0.75}}
+2025-05-08 03:52:09,682 [INFO] running on: cuda:0
+2025-05-08 03:52:10,241 [INFO] Model(
+  (model): ResNet(
+    (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu): ReLU(inplace=True)
+    (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+    (layer1): Sequential(
+      (0): Bottleneck(
+        (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (layer2): Sequential(
+      (0): Bottleneck(
+        (conv1): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (3): Bottleneck(
+        (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (layer3): Sequential(
+      (0): Bottleneck(
+        (conv1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (3): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (4): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (5): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (layer4): Sequential(
+      (0): Bottleneck(
+        (conv1): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+    (fc): Identity()
+  )
+  (heads): ModuleDict(
+    (level): CoralLayer(
+      (coral_weights): Linear(in_features=2048, out_features=1, bias=False)
+    )
+  )
+)
+2025-05-08 03:52:10,242 [INFO] Number of trn data 12100
+2025-05-08 03:52:10,242 [INFO] Number of val data 3026
+2025-05-08 03:52:10,249 [INFO] Epoch 0/49
+2025-05-08 03:52:10,249 [INFO] ----------------------------------------
+2025-05-08 03:52:51,443 [INFO] [trn phase]
+2025-05-08 03:52:51,444 [INFO] error: 1.1170 level_error:1.1170
+2025-05-08 03:52:51,444 [INFO] loss: 2.2175 level_loss:2.2175
+2025-05-08 03:52:56,334 [INFO] [val phase]
+2025-05-08 03:52:56,334 [INFO] error: 1.0023 level_error:1.0023
+2025-05-08 03:52:56,334 [INFO] loss: 2.1610 level_loss:2.1610
+2025-05-08 03:52:56,334 [INFO] Best Epoch: 0
+2025-05-08 03:52:57,003 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_0.pth
+2025-05-08 03:52:57,004 [INFO] Epoch 1/49
+2025-05-08 03:52:57,004 [INFO] ----------------------------------------
+2025-05-08 03:53:36,825 [INFO] [trn phase]
+2025-05-08 03:53:36,826 [INFO] error: 1.0258 level_error:1.0258
+2025-05-08 03:53:36,826 [INFO] loss: 2.0884 level_loss:2.0884
+2025-05-08 03:53:41,835 [INFO] [val phase]
+2025-05-08 03:53:41,835 [INFO] error: 1.1130 level_error:1.1130
+2025-05-08 03:53:41,835 [INFO] loss: 2.1294 level_loss:2.1294
+2025-05-08 03:53:41,835 [INFO] Best Epoch: 0
+2025-05-08 03:53:42,531 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_1.pth
+2025-05-08 03:53:42,531 [INFO] Epoch 2/49
+2025-05-08 03:53:42,531 [INFO] ----------------------------------------
+2025-05-08 03:54:22,383 [INFO] [trn phase]
+2025-05-08 03:54:22,385 [INFO] error: 0.9651 level_error:0.9651
+2025-05-08 03:54:22,385 [INFO] loss: 2.0297 level_loss:2.0297
+2025-05-08 03:54:27,412 [INFO] [val phase]
+2025-05-08 03:54:27,412 [INFO] error: 0.9577 level_error:0.9577
+2025-05-08 03:54:27,412 [INFO] loss: 2.0513 level_loss:2.0513
+2025-05-08 03:54:27,412 [INFO] Best Epoch: 2
+2025-05-08 03:54:28,141 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_2.pth
+2025-05-08 03:54:28,141 [INFO] Epoch 3/49
+2025-05-08 03:54:28,141 [INFO] ----------------------------------------
+2025-05-08 03:55:07,969 [INFO] [trn phase]
+2025-05-08 03:55:07,971 [INFO] error: 0.9232 level_error:0.9232
+2025-05-08 03:55:07,971 [INFO] loss: 1.9692 level_loss:1.9692
+2025-05-08 03:55:12,968 [INFO] [val phase]
+2025-05-08 03:55:12,968 [INFO] error: 0.9392 level_error:0.9392
+2025-05-08 03:55:12,968 [INFO] loss: 2.0097 level_loss:2.0097
+2025-05-08 03:55:12,968 [INFO] Best Epoch: 3
+2025-05-08 03:55:13,697 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_3.pth
+2025-05-08 03:55:13,697 [INFO] Epoch 4/49
+2025-05-08 03:55:13,697 [INFO] ----------------------------------------
+2025-05-08 03:55:53,611 [INFO] [trn phase]
+2025-05-08 03:55:53,611 [INFO] error: 0.8911 level_error:0.8911
+2025-05-08 03:55:53,611 [INFO] loss: 1.9230 level_loss:1.9230
+2025-05-08 03:55:58,598 [INFO] [val phase]
+2025-05-08 03:55:58,598 [INFO] error: 0.8942 level_error:0.8942
+2025-05-08 03:55:58,598 [INFO] loss: 2.0062 level_loss:2.0062
+2025-05-08 03:55:58,598 [INFO] Best Epoch: 4
+2025-05-08 03:55:59,296 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_4.pth
+2025-05-08 03:55:59,296 [INFO] Epoch 5/49
+2025-05-08 03:55:59,296 [INFO] ----------------------------------------
+2025-05-08 03:56:39,109 [INFO] [trn phase]
+2025-05-08 03:56:39,111 [INFO] error: 0.8603 level_error:0.8603
+2025-05-08 03:56:39,111 [INFO] loss: 1.8870 level_loss:1.8870
+2025-05-08 03:56:44,121 [INFO] [val phase]
+2025-05-08 03:56:44,121 [INFO] error: 0.9012 level_error:0.9012
+2025-05-08 03:56:44,122 [INFO] loss: 1.9946 level_loss:1.9946
+2025-05-08 03:56:44,122 [INFO] Best Epoch: 4
+2025-05-08 03:56:44,851 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_5.pth
+2025-05-08 03:56:44,851 [INFO] Epoch 6/49
+2025-05-08 03:56:44,851 [INFO] ----------------------------------------
+2025-05-08 03:57:24,737 [INFO] [trn phase]
+2025-05-08 03:57:24,739 [INFO] error: 0.8276 level_error:0.8276
+2025-05-08 03:57:24,739 [INFO] loss: 1.8476 level_loss:1.8476
+2025-05-08 03:57:29,702 [INFO] [val phase]
+2025-05-08 03:57:29,702 [INFO] error: 0.9065 level_error:0.9065
+2025-05-08 03:57:29,702 [INFO] loss: 1.9556 level_loss:1.9556
+2025-05-08 03:57:29,702 [INFO] Best Epoch: 4
+2025-05-08 03:57:30,399 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_6.pth
+2025-05-08 03:57:30,400 [INFO] Epoch 7/49
+2025-05-08 03:57:30,400 [INFO] ----------------------------------------
+2025-05-08 03:58:10,295 [INFO] [trn phase]
+2025-05-08 03:58:10,298 [INFO] error: 0.7991 level_error:0.7991
+2025-05-08 03:58:10,298 [INFO] loss: 1.7953 level_loss:1.7953
+2025-05-08 03:58:15,203 [INFO] [val phase]
+2025-05-08 03:58:15,203 [INFO] error: 0.8976 level_error:0.8976
+2025-05-08 03:58:15,203 [INFO] loss: 1.9596 level_loss:1.9596
+2025-05-08 03:58:15,203 [INFO] Best Epoch: 4
+2025-05-08 03:58:16,009 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_7.pth
+2025-05-08 03:58:16,009 [INFO] Epoch 8/49
+2025-05-08 03:58:16,009 [INFO] ----------------------------------------
+2025-05-08 03:58:55,913 [INFO] [trn phase]
+2025-05-08 03:58:55,915 [INFO] error: 0.7712 level_error:0.7712
+2025-05-08 03:58:55,916 [INFO] loss: 1.7538 level_loss:1.7538
+2025-05-08 03:59:00,937 [INFO] [val phase]
+2025-05-08 03:59:00,937 [INFO] error: 0.9339 level_error:0.9339
+2025-05-08 03:59:00,937 [INFO] loss: 1.9985 level_loss:1.9985
+2025-05-08 03:59:00,937 [INFO] Best Epoch: 4
+2025-05-08 03:59:01,673 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_8.pth
+2025-05-08 03:59:01,673 [INFO] Epoch 9/49
+2025-05-08 03:59:01,673 [INFO] ----------------------------------------
+2025-05-08 03:59:41,587 [INFO] [trn phase]
+2025-05-08 03:59:41,588 [INFO] error: 0.7534 level_error:0.7534
+2025-05-08 03:59:41,588 [INFO] loss: 1.7317 level_loss:1.7317
+2025-05-08 03:59:46,603 [INFO] [val phase]
+2025-05-08 03:59:46,604 [INFO] error: 0.8929 level_error:0.8929
+2025-05-08 03:59:46,604 [INFO] loss: 1.9085 level_loss:1.9085
+2025-05-08 03:59:46,604 [INFO] Best Epoch: 9
+2025-05-08 03:59:47,306 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_9.pth
+2025-05-08 03:59:47,306 [INFO] Epoch 10/49
+2025-05-08 03:59:47,306 [INFO] ----------------------------------------
+2025-05-08 04:00:27,166 [INFO] [trn phase]
+2025-05-08 04:00:27,167 [INFO] error: 0.7231 level_error:0.7231
+2025-05-08 04:00:27,167 [INFO] loss: 1.6828 level_loss:1.6828
+2025-05-08 04:00:32,182 [INFO] [val phase]
+2025-05-08 04:00:32,182 [INFO] error: 0.8728 level_error:0.8728
+2025-05-08 04:00:32,182 [INFO] loss: 1.9179 level_loss:1.9179
+2025-05-08 04:00:32,182 [INFO] Best Epoch: 10
+2025-05-08 04:00:32,887 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_10.pth
+2025-05-08 04:00:32,887 [INFO] Epoch 11/49
+2025-05-08 04:00:32,887 [INFO] ----------------------------------------
+2025-05-08 04:01:12,765 [INFO] [trn phase]
+2025-05-08 04:01:12,765 [INFO] error: 0.7019 level_error:0.7019
+2025-05-08 04:01:12,765 [INFO] loss: 1.6369 level_loss:1.6369
+2025-05-08 04:01:17,772 [INFO] [val phase]
+2025-05-08 04:01:17,772 [INFO] error: 0.8453 level_error:0.8453
+2025-05-08 04:01:17,772 [INFO] loss: 1.8875 level_loss:1.8875
+2025-05-08 04:01:17,772 [INFO] Best Epoch: 11
+2025-05-08 04:01:18,499 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_11.pth
+2025-05-08 04:01:18,499 [INFO] Epoch 12/49
+2025-05-08 04:01:18,499 [INFO] ----------------------------------------
+2025-05-08 04:01:58,430 [INFO] [trn phase]
+2025-05-08 04:01:58,432 [INFO] error: 0.6775 level_error:0.6775
+2025-05-08 04:01:58,432 [INFO] loss: 1.6017 level_loss:1.6017
+2025-05-08 04:02:03,344 [INFO] [val phase]
+2025-05-08 04:02:03,344 [INFO] error: 0.9197 level_error:0.9197
+2025-05-08 04:02:03,344 [INFO] loss: 2.0377 level_loss:2.0377
+2025-05-08 04:02:03,344 [INFO] Best Epoch: 11
+2025-05-08 04:02:04,041 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_12.pth
+2025-05-08 04:02:04,041 [INFO] Epoch 13/49
+2025-05-08 04:02:04,041 [INFO] ----------------------------------------
+2025-05-08 04:02:43,942 [INFO] [trn phase]
+2025-05-08 04:02:43,944 [INFO] error: 0.6598 level_error:0.6598
+2025-05-08 04:02:43,944 [INFO] loss: 1.5607 level_loss:1.5607
+2025-05-08 04:02:48,901 [INFO] [val phase]
+2025-05-08 04:02:48,901 [INFO] error: 0.8946 level_error:0.8946
+2025-05-08 04:02:48,901 [INFO] loss: 1.9317 level_loss:1.9317
+2025-05-08 04:02:48,901 [INFO] Best Epoch: 11
+2025-05-08 04:02:49,603 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_13.pth
+2025-05-08 04:02:49,603 [INFO] Epoch 14/49
+2025-05-08 04:02:49,603 [INFO] ----------------------------------------
+2025-05-08 04:03:29,437 [INFO] [trn phase]
+2025-05-08 04:03:29,438 [INFO] error: 0.6278 level_error:0.6278
+2025-05-08 04:03:29,438 [INFO] loss: 1.5159 level_loss:1.5159
+2025-05-08 04:03:34,420 [INFO] [val phase]
+2025-05-08 04:03:34,420 [INFO] error: 0.8827 level_error:0.8827
+2025-05-08 04:03:34,420 [INFO] loss: 1.9360 level_loss:1.9360
+2025-05-08 04:03:34,420 [INFO] Best Epoch: 11
+2025-05-08 04:03:35,125 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_14.pth
+2025-05-08 04:03:35,125 [INFO] Epoch 15/49
+2025-05-08 04:03:35,125 [INFO] ----------------------------------------
+2025-05-08 04:04:15,007 [INFO] [trn phase]
+2025-05-08 04:04:15,008 [INFO] error: 0.6016 level_error:0.6016
+2025-05-08 04:04:15,008 [INFO] loss: 1.4661 level_loss:1.4661
+2025-05-08 04:04:19,974 [INFO] [val phase]
+2025-05-08 04:04:19,974 [INFO] error: 0.8850 level_error:0.8850
+2025-05-08 04:04:19,974 [INFO] loss: 1.9455 level_loss:1.9455
+2025-05-08 04:04:19,974 [INFO] Best Epoch: 11
+2025-05-08 04:04:20,679 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_15.pth
+2025-05-08 04:04:20,679 [INFO] Epoch 16/49
+2025-05-08 04:04:20,679 [INFO] ----------------------------------------
+2025-05-08 04:05:00,540 [INFO] [trn phase]
+2025-05-08 04:05:00,542 [INFO] error: 0.5897 level_error:0.5897
+2025-05-08 04:05:00,542 [INFO] loss: 1.4342 level_loss:1.4342
+2025-05-08 04:05:05,545 [INFO] [val phase]
+2025-05-08 04:05:05,545 [INFO] error: 0.8781 level_error:0.8781
+2025-05-08 04:05:05,545 [INFO] loss: 1.9985 level_loss:1.9985
+2025-05-08 04:05:05,545 [INFO] Best Epoch: 11
+2025-05-08 04:05:06,288 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_16.pth
+2025-05-08 04:05:06,288 [INFO] Epoch 17/49
+2025-05-08 04:05:06,288 [INFO] ----------------------------------------
+2025-05-08 04:05:46,157 [INFO] [trn phase]
+2025-05-08 04:05:46,159 [INFO] error: 0.5607 level_error:0.5607
+2025-05-08 04:05:46,159 [INFO] loss: 1.3793 level_loss:1.3793
+2025-05-08 04:05:51,102 [INFO] [val phase]
+2025-05-08 04:05:51,102 [INFO] error: 0.8698 level_error:0.8698
+2025-05-08 04:05:51,102 [INFO] loss: 2.0202 level_loss:2.0202
+2025-05-08 04:05:51,102 [INFO] Best Epoch: 11
+2025-05-08 04:05:51,807 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_17.pth
+2025-05-08 04:05:51,807 [INFO] Epoch 18/49
+2025-05-08 04:05:51,807 [INFO] ----------------------------------------
+2025-05-08 04:06:31,681 [INFO] [trn phase]
+2025-05-08 04:06:31,683 [INFO] error: 0.5356 level_error:0.5356
+2025-05-08 04:06:31,683 [INFO] loss: 1.3325 level_loss:1.3325
+2025-05-08 04:06:36,557 [INFO] [val phase]
+2025-05-08 04:06:36,557 [INFO] error: 1.0063 level_error:1.0063
+2025-05-08 04:06:36,557 [INFO] loss: 2.1111 level_loss:2.1111
+2025-05-08 04:06:36,557 [INFO] Best Epoch: 11
+2025-05-08 04:06:37,265 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_18.pth
+2025-05-08 04:06:37,265 [INFO] Epoch 19/49
+2025-05-08 04:06:37,265 [INFO] ----------------------------------------
+2025-05-08 04:07:17,168 [INFO] [trn phase]
+2025-05-08 04:07:17,169 [INFO] error: 0.5031 level_error:0.5031
+2025-05-08 04:07:17,169 [INFO] loss: 1.2663 level_loss:1.2663
+2025-05-08 04:07:22,200 [INFO] [val phase]
+2025-05-08 04:07:22,200 [INFO] error: 0.9299 level_error:0.9299
+2025-05-08 04:07:22,200 [INFO] loss: 2.0378 level_loss:2.0378
+2025-05-08 04:07:22,200 [INFO] Best Epoch: 11
+2025-05-08 04:07:22,905 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_19.pth
+2025-05-08 04:07:22,905 [INFO] Epoch 20/49
+2025-05-08 04:07:22,905 [INFO] ----------------------------------------
+2025-05-08 04:08:02,776 [INFO] [trn phase]
+2025-05-08 04:08:02,776 [INFO] error: 0.4860 level_error:0.4860
+2025-05-08 04:08:02,776 [INFO] loss: 1.2358 level_loss:1.2358
+2025-05-08 04:08:07,689 [INFO] [val phase]
+2025-05-08 04:08:07,689 [INFO] error: 0.8886 level_error:0.8886
+2025-05-08 04:08:07,689 [INFO] loss: 2.1296 level_loss:2.1296
+2025-05-08 04:08:07,689 [INFO] Best Epoch: 11
+2025-05-08 04:08:08,400 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_20.pth
+2025-05-08 04:08:08,401 [INFO] Epoch 21/49
+2025-05-08 04:08:08,401 [INFO] ----------------------------------------
+2025-05-08 04:08:48,284 [INFO] [trn phase]
+2025-05-08 04:08:48,285 [INFO] error: 0.4542 level_error:0.4542
+2025-05-08 04:08:48,285 [INFO] loss: 1.1727 level_loss:1.1727
+2025-05-08 04:08:53,258 [INFO] [val phase]
+2025-05-08 04:08:53,258 [INFO] error: 0.8824 level_error:0.8824
+2025-05-08 04:08:53,258 [INFO] loss: 2.1586 level_loss:2.1586
+2025-05-08 04:08:53,258 [INFO] Best Epoch: 11
+2025-05-08 04:08:53,999 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_21.pth
+2025-05-08 04:08:53,999 [INFO] Epoch 22/49
+2025-05-08 04:08:53,999 [INFO] ----------------------------------------
+2025-05-08 04:09:33,899 [INFO] [trn phase]
+2025-05-08 04:09:33,901 [INFO] error: 0.4478 level_error:0.4478
+2025-05-08 04:09:33,901 [INFO] loss: 1.1499 level_loss:1.1499
+2025-05-08 04:09:38,932 [INFO] [val phase]
+2025-05-08 04:09:38,932 [INFO] error: 0.9048 level_error:0.9048
+2025-05-08 04:09:38,932 [INFO] loss: 2.2634 level_loss:2.2634
+2025-05-08 04:09:38,932 [INFO] Best Epoch: 11
+2025-05-08 04:09:39,639 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_22.pth
+2025-05-08 04:09:39,640 [INFO] Epoch 23/49
+2025-05-08 04:09:39,640 [INFO] ----------------------------------------
+2025-05-08 04:10:19,567 [INFO] [trn phase]
+2025-05-08 04:10:19,568 [INFO] error: 0.4250 level_error:0.4250
+2025-05-08 04:10:19,568 [INFO] loss: 1.1018 level_loss:1.1018
+2025-05-08 04:10:24,564 [INFO] [val phase]
+2025-05-08 04:10:24,564 [INFO] error: 0.9987 level_error:0.9987
+2025-05-08 04:10:24,564 [INFO] loss: 2.1768 level_loss:2.1768
+2025-05-08 04:10:24,564 [INFO] Best Epoch: 11
+2025-05-08 04:10:25,277 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_23.pth
+2025-05-08 04:10:25,277 [INFO] Epoch 24/49
+2025-05-08 04:10:25,277 [INFO] ----------------------------------------
+2025-05-08 04:11:05,280 [INFO] [trn phase]
+2025-05-08 04:11:05,280 [INFO] error: 0.4019 level_error:0.4019
+2025-05-08 04:11:05,280 [INFO] loss: 1.0655 level_loss:1.0655
+2025-05-08 04:11:10,265 [INFO] [val phase]
+2025-05-08 04:11:10,265 [INFO] error: 0.8847 level_error:0.8847
+2025-05-08 04:11:10,265 [INFO] loss: 2.2369 level_loss:2.2369
+2025-05-08 04:11:10,266 [INFO] Best Epoch: 11
+2025-05-08 04:11:10,996 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_24.pth
+2025-05-08 04:11:10,997 [INFO] Epoch 25/49
+2025-05-08 04:11:10,997 [INFO] ----------------------------------------
+2025-05-08 04:11:50,960 [INFO] [trn phase]
+2025-05-08 04:11:50,963 [INFO] error: 0.3814 level_error:0.3814
+2025-05-08 04:11:50,963 [INFO] loss: 1.0303 level_loss:1.0303
+2025-05-08 04:11:55,843 [INFO] [val phase]
+2025-05-08 04:11:55,843 [INFO] error: 0.8886 level_error:0.8886
+2025-05-08 04:11:55,843 [INFO] loss: 2.0922 level_loss:2.0922
+2025-05-08 04:11:55,843 [INFO] Best Epoch: 11
+2025-05-08 04:11:56,581 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_25.pth
+2025-05-08 04:11:56,581 [INFO] Epoch 26/49
+2025-05-08 04:11:56,581 [INFO] ----------------------------------------
+2025-05-08 04:12:36,503 [INFO] [trn phase]
+2025-05-08 04:12:36,503 [INFO] error: 0.3602 level_error:0.3602
+2025-05-08 04:12:36,503 [INFO] loss: 0.9764 level_loss:0.9764
+2025-05-08 04:12:41,431 [INFO] [val phase]
+2025-05-08 04:12:41,431 [INFO] error: 0.8784 level_error:0.8784
+2025-05-08 04:12:41,431 [INFO] loss: 2.3160 level_loss:2.3160
+2025-05-08 04:12:41,431 [INFO] Best Epoch: 11
+2025-05-08 04:12:42,140 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_26.pth
+2025-05-08 04:12:42,140 [INFO] Epoch 27/49
+2025-05-08 04:12:42,140 [INFO] ----------------------------------------
+2025-05-08 04:13:22,147 [INFO] [trn phase]
+2025-05-08 04:13:22,150 [INFO] error: 0.3497 level_error:0.3497
+2025-05-08 04:13:22,150 [INFO] loss: 0.9504 level_loss:0.9504
+2025-05-08 04:13:27,037 [INFO] [val phase]
+2025-05-08 04:13:27,037 [INFO] error: 0.8962 level_error:0.8962
+2025-05-08 04:13:27,037 [INFO] loss: 2.0505 level_loss:2.0505
+2025-05-08 04:13:27,037 [INFO] Best Epoch: 11
+2025-05-08 04:13:27,777 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_27.pth
+2025-05-08 04:13:27,777 [INFO] Epoch 28/49
+2025-05-08 04:13:27,777 [INFO] ----------------------------------------
+2025-05-08 04:14:07,694 [INFO] [trn phase]
+2025-05-08 04:14:07,696 [INFO] error: 0.3310 level_error:0.3310
+2025-05-08 04:14:07,696 [INFO] loss: 0.9219 level_loss:0.9219
+2025-05-08 04:14:12,692 [INFO] [val phase]
+2025-05-08 04:14:12,692 [INFO] error: 0.8866 level_error:0.8866
+2025-05-08 04:14:12,692 [INFO] loss: 2.1449 level_loss:2.1449
+2025-05-08 04:14:12,692 [INFO] Best Epoch: 11
+2025-05-08 04:14:13,398 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_28.pth
+2025-05-08 04:14:13,398 [INFO] Epoch 29/49
+2025-05-08 04:14:13,398 [INFO] ----------------------------------------
+2025-05-08 04:14:53,295 [INFO] [trn phase]
+2025-05-08 04:14:53,297 [INFO] error: 0.3241 level_error:0.3241
+2025-05-08 04:14:53,297 [INFO] loss: 0.9031 level_loss:0.9031
+2025-05-08 04:14:58,287 [INFO] [val phase]
+2025-05-08 04:14:58,287 [INFO] error: 0.8916 level_error:0.8916
+2025-05-08 04:14:58,287 [INFO] loss: 2.1582 level_loss:2.1582
+2025-05-08 04:14:58,287 [INFO] Best Epoch: 11
+2025-05-08 04:14:59,024 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_29.pth
+2025-05-08 04:14:59,024 [INFO] Epoch 30/49
+2025-05-08 04:14:59,024 [INFO] ----------------------------------------
+2025-05-08 04:15:38,977 [INFO] [trn phase]
+2025-05-08 04:15:38,977 [INFO] error: 0.2977 level_error:0.2977
+2025-05-08 04:15:38,977 [INFO] loss: 0.8604 level_loss:0.8604
+2025-05-08 04:15:43,885 [INFO] [val phase]
+2025-05-08 04:15:43,885 [INFO] error: 0.8883 level_error:0.8883
+2025-05-08 04:15:43,885 [INFO] loss: 2.5284 level_loss:2.5284
+2025-05-08 04:15:43,885 [INFO] Best Epoch: 11
+2025-05-08 04:15:44,602 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_30.pth
+2025-05-08 04:15:44,603 [INFO] Epoch 31/49
+2025-05-08 04:15:44,603 [INFO] ----------------------------------------
+2025-05-08 04:16:24,518 [INFO] [trn phase]
+2025-05-08 04:16:24,520 [INFO] error: 0.3031 level_error:0.3031
+2025-05-08 04:16:24,520 [INFO] loss: 0.8551 level_loss:0.8551
+2025-05-08 04:16:29,413 [INFO] [val phase]
+2025-05-08 04:16:29,413 [INFO] error: 0.8804 level_error:0.8804
+2025-05-08 04:16:29,413 [INFO] loss: 2.2810 level_loss:2.2810
+2025-05-08 04:16:29,413 [INFO] Best Epoch: 11
+2025-05-08 04:16:30,119 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_31.pth
+2025-05-08 04:16:30,119 [INFO] Epoch 32/49
+2025-05-08 04:16:30,120 [INFO] ----------------------------------------
+2025-05-08 04:17:10,046 [INFO] [trn phase]
+2025-05-08 04:17:10,048 [INFO] error: 0.2792 level_error:0.2792
+2025-05-08 04:17:10,048 [INFO] loss: 0.8145 level_loss:0.8145
+2025-05-08 04:17:15,080 [INFO] [val phase]
+2025-05-08 04:17:15,080 [INFO] error: 0.8949 level_error:0.8949
+2025-05-08 04:17:15,080 [INFO] loss: 2.4354 level_loss:2.4354
+2025-05-08 04:17:15,080 [INFO] Best Epoch: 11
+2025-05-08 04:17:15,804 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_32.pth
+2025-05-08 04:17:15,804 [INFO] Epoch 33/49
+2025-05-08 04:17:15,804 [INFO] ----------------------------------------
+2025-05-08 04:17:55,750 [INFO] [trn phase]
+2025-05-08 04:17:55,750 [INFO] error: 0.2764 level_error:0.2764
+2025-05-08 04:17:55,750 [INFO] loss: 0.8028 level_loss:0.8028
+2025-05-08 04:18:00,747 [INFO] [val phase]
+2025-05-08 04:18:00,747 [INFO] error: 0.8959 level_error:0.8959
+2025-05-08 04:18:00,747 [INFO] loss: 2.1840 level_loss:2.1840
+2025-05-08 04:18:00,747 [INFO] Best Epoch: 11
+2025-05-08 04:18:01,483 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_33.pth
+2025-05-08 04:18:01,483 [INFO] Epoch 34/49
+2025-05-08 04:18:01,483 [INFO] ----------------------------------------
+2025-05-08 04:18:41,412 [INFO] [trn phase]
+2025-05-08 04:18:41,413 [INFO] error: 0.2663 level_error:0.2663
+2025-05-08 04:18:41,413 [INFO] loss: 0.7867 level_loss:0.7867
+2025-05-08 04:18:46,441 [INFO] [val phase]
+2025-05-08 04:18:46,441 [INFO] error: 0.8850 level_error:0.8850
+2025-05-08 04:18:46,441 [INFO] loss: 2.6197 level_loss:2.6197
+2025-05-08 04:18:46,441 [INFO] Best Epoch: 11
+2025-05-08 04:18:47,147 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_34.pth
+2025-05-08 04:18:47,148 [INFO] Epoch 35/49
+2025-05-08 04:18:47,148 [INFO] ----------------------------------------
+2025-05-08 04:19:27,116 [INFO] [trn phase]
+2025-05-08 04:19:27,118 [INFO] error: 0.2660 level_error:0.2660
+2025-05-08 04:19:27,118 [INFO] loss: 0.7704 level_loss:0.7704
+2025-05-08 04:19:32,036 [INFO] [val phase]
+2025-05-08 04:19:32,036 [INFO] error: 0.8893 level_error:0.8893
+2025-05-08 04:19:32,036 [INFO] loss: 2.3287 level_loss:2.3287
+2025-05-08 04:19:32,036 [INFO] Best Epoch: 11
+2025-05-08 04:19:32,769 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_35.pth
+2025-05-08 04:19:32,769 [INFO] Epoch 36/49
+2025-05-08 04:19:32,769 [INFO] ----------------------------------------
+2025-05-08 04:20:12,643 [INFO] [trn phase]
+2025-05-08 04:20:12,644 [INFO] error: 0.2549 level_error:0.2549
+2025-05-08 04:20:12,644 [INFO] loss: 0.7490 level_loss:0.7490
+2025-05-08 04:20:17,511 [INFO] [val phase]
+2025-05-08 04:20:17,511 [INFO] error: 0.8797 level_error:0.8797
+2025-05-08 04:20:17,511 [INFO] loss: 2.2128 level_loss:2.2128
+2025-05-08 04:20:17,511 [INFO] Best Epoch: 11
+2025-05-08 04:20:18,217 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_36.pth
+2025-05-08 04:20:18,217 [INFO] Epoch 37/49
+2025-05-08 04:20:18,217 [INFO] ----------------------------------------
+2025-05-08 04:20:58,148 [INFO] [trn phase]
+2025-05-08 04:20:58,149 [INFO] error: 0.2414 level_error:0.2414
+2025-05-08 04:20:58,149 [INFO] loss: 0.7312 level_loss:0.7312
+2025-05-08 04:21:03,137 [INFO] [val phase]
+2025-05-08 04:21:03,138 [INFO] error: 0.8853 level_error:0.8853
+2025-05-08 04:21:03,138 [INFO] loss: 2.3126 level_loss:2.3126
+2025-05-08 04:21:03,138 [INFO] Best Epoch: 11
+2025-05-08 04:21:03,873 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_37.pth
+2025-05-08 04:21:03,873 [INFO] Epoch 38/49
+2025-05-08 04:21:03,873 [INFO] ----------------------------------------
+2025-05-08 04:21:43,828 [INFO] [trn phase]
+2025-05-08 04:21:43,830 [INFO] error: 0.2375 level_error:0.2375
+2025-05-08 04:21:43,830 [INFO] loss: 0.7153 level_loss:0.7153
+2025-05-08 04:21:48,876 [INFO] [val phase]
+2025-05-08 04:21:48,877 [INFO] error: 0.8748 level_error:0.8748
+2025-05-08 04:21:48,877 [INFO] loss: 2.1335 level_loss:2.1335
+2025-05-08 04:21:48,877 [INFO] Best Epoch: 11
+2025-05-08 04:21:49,615 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_38.pth
+2025-05-08 04:21:49,615 [INFO] Epoch 39/49
+2025-05-08 04:21:49,615 [INFO] ----------------------------------------
+2025-05-08 04:22:29,649 [INFO] [trn phase]
+2025-05-08 04:22:29,649 [INFO] error: 0.2314 level_error:0.2314
+2025-05-08 04:22:29,649 [INFO] loss: 0.6981 level_loss:0.6981
+2025-05-08 04:22:34,678 [INFO] [val phase]
+2025-05-08 04:22:34,679 [INFO] error: 0.8609 level_error:0.8609
+2025-05-08 04:22:34,679 [INFO] loss: 2.3260 level_loss:2.3260
+2025-05-08 04:22:34,679 [INFO] Best Epoch: 11
+2025-05-08 04:22:35,418 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_39.pth
+2025-05-08 04:22:35,418 [INFO] Epoch 40/49
+2025-05-08 04:22:35,418 [INFO] ----------------------------------------
+2025-05-08 04:23:15,364 [INFO] [trn phase]
+2025-05-08 04:23:15,365 [INFO] error: 0.2260 level_error:0.2260
+2025-05-08 04:23:15,365 [INFO] loss: 0.6876 level_loss:0.6876
+2025-05-08 04:23:20,342 [INFO] [val phase]
+2025-05-08 04:23:20,342 [INFO] error: 0.8880 level_error:0.8880
+2025-05-08 04:23:20,342 [INFO] loss: 2.3737 level_loss:2.3737
+2025-05-08 04:23:20,342 [INFO] Best Epoch: 11
+2025-05-08 04:23:21,047 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_40.pth
+2025-05-08 04:23:21,047 [INFO] Epoch 41/49
+2025-05-08 04:23:21,047 [INFO] ----------------------------------------
+2025-05-08 04:24:01,042 [INFO] [trn phase]
+2025-05-08 04:24:01,044 [INFO] error: 0.2279 level_error:0.2279
+2025-05-08 04:24:01,044 [INFO] loss: 0.6771 level_loss:0.6771
+2025-05-08 04:24:06,081 [INFO] [val phase]
+2025-05-08 04:24:06,081 [INFO] error: 0.8635 level_error:0.8635
+2025-05-08 04:24:06,081 [INFO] loss: 2.2000 level_loss:2.2000
+2025-05-08 04:24:06,081 [INFO] Best Epoch: 11
+2025-05-08 04:24:06,819 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_41.pth
+2025-05-08 04:24:06,819 [INFO] Epoch 42/49
+2025-05-08 04:24:06,819 [INFO] ----------------------------------------
+2025-05-08 04:24:46,728 [INFO] [trn phase]
+2025-05-08 04:24:46,728 [INFO] error: 0.2256 level_error:0.2256
+2025-05-08 04:24:46,728 [INFO] loss: 0.6749 level_loss:0.6749
+2025-05-08 04:24:51,645 [INFO] [val phase]
+2025-05-08 04:24:51,646 [INFO] error: 0.8490 level_error:0.8490
+2025-05-08 04:24:51,646 [INFO] loss: 2.2678 level_loss:2.2678
+2025-05-08 04:24:51,646 [INFO] Best Epoch: 11
+2025-05-08 04:24:52,356 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_42.pth
+2025-05-08 04:24:52,357 [INFO] Epoch 43/49
+2025-05-08 04:24:52,357 [INFO] ----------------------------------------
+2025-05-08 04:25:32,244 [INFO] [trn phase]
+2025-05-08 04:25:32,245 [INFO] error: 0.2182 level_error:0.2182
+2025-05-08 04:25:32,245 [INFO] loss: 0.6549 level_loss:0.6549
+2025-05-08 04:25:37,201 [INFO] [val phase]
+2025-05-08 04:25:37,201 [INFO] error: 0.8764 level_error:0.8764
+2025-05-08 04:25:37,201 [INFO] loss: 2.2188 level_loss:2.2188
+2025-05-08 04:25:37,201 [INFO] Best Epoch: 11
+2025-05-08 04:25:37,915 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_43.pth
+2025-05-08 04:25:37,915 [INFO] Epoch 44/49
+2025-05-08 04:25:37,915 [INFO] ----------------------------------------
+2025-05-08 04:26:17,793 [INFO] [trn phase]
+2025-05-08 04:26:17,794 [INFO] error: 0.2162 level_error:0.2162
+2025-05-08 04:26:17,794 [INFO] loss: 0.6503 level_loss:0.6503
+2025-05-08 04:26:22,789 [INFO] [val phase]
+2025-05-08 04:26:22,789 [INFO] error: 0.8338 level_error:0.8338
+2025-05-08 04:26:22,789 [INFO] loss: 2.6257 level_loss:2.6257
+2025-05-08 04:26:22,789 [INFO] Best Epoch: 44
+2025-05-08 04:26:23,506 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_44.pth
+2025-05-08 04:26:23,507 [INFO] Epoch 45/49
+2025-05-08 04:26:23,507 [INFO] ----------------------------------------
+2025-05-08 04:27:03,388 [INFO] [trn phase]
+2025-05-08 04:27:03,390 [INFO] error: 0.2069 level_error:0.2069
+2025-05-08 04:27:03,390 [INFO] loss: 0.6311 level_loss:0.6311
+2025-05-08 04:27:08,370 [INFO] [val phase]
+2025-05-08 04:27:08,370 [INFO] error: 0.8804 level_error:0.8804
+2025-05-08 04:27:08,370 [INFO] loss: 2.3857 level_loss:2.3857
+2025-05-08 04:27:08,370 [INFO] Best Epoch: 44
+2025-05-08 04:27:09,117 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_45.pth
+2025-05-08 04:27:09,117 [INFO] Epoch 46/49
+2025-05-08 04:27:09,117 [INFO] ----------------------------------------
+2025-05-08 04:27:49,034 [INFO] [trn phase]
+2025-05-08 04:27:49,034 [INFO] error: 0.1982 level_error:0.1982
+2025-05-08 04:27:49,034 [INFO] loss: 0.6120 level_loss:0.6120
+2025-05-08 04:27:54,107 [INFO] [val phase]
+2025-05-08 04:27:54,107 [INFO] error: 0.8543 level_error:0.8543
+2025-05-08 04:27:54,107 [INFO] loss: 2.6145 level_loss:2.6145
+2025-05-08 04:27:54,107 [INFO] Best Epoch: 44
+2025-05-08 04:27:54,821 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_46.pth
+2025-05-08 04:27:54,821 [INFO] Epoch 47/49
+2025-05-08 04:27:54,821 [INFO] ----------------------------------------
+2025-05-08 04:28:34,790 [INFO] [trn phase]
+2025-05-08 04:28:34,792 [INFO] error: 0.1896 level_error:0.1896
+2025-05-08 04:28:34,792 [INFO] loss: 0.5967 level_loss:0.5967
+2025-05-08 04:28:39,677 [INFO] [val phase]
+2025-05-08 04:28:39,677 [INFO] error: 0.8430 level_error:0.8430
+2025-05-08 04:28:39,677 [INFO] loss: 2.7152 level_loss:2.7152
+2025-05-08 04:28:39,677 [INFO] Best Epoch: 44
+2025-05-08 04:28:40,406 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_47.pth
+2025-05-08 04:28:40,407 [INFO] Epoch 48/49
+2025-05-08 04:28:40,407 [INFO] ----------------------------------------
+2025-05-08 04:29:20,360 [INFO] [trn phase]
+2025-05-08 04:29:20,361 [INFO] error: 0.1941 level_error:0.1941
+2025-05-08 04:29:20,361 [INFO] loss: 0.5915 level_loss:0.5915
+2025-05-08 04:29:25,440 [INFO] [val phase]
+2025-05-08 04:29:25,441 [INFO] error: 0.8367 level_error:0.8367
+2025-05-08 04:29:25,441 [INFO] loss: 2.3901 level_loss:2.3901
+2025-05-08 04:29:25,441 [INFO] Best Epoch: 44
+2025-05-08 04:29:26,148 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_48.pth
+2025-05-08 04:29:26,148 [INFO] Epoch 49/49
+2025-05-08 04:29:26,148 [INFO] ----------------------------------------
+2025-05-08 04:30:06,082 [INFO] [trn phase]
+2025-05-08 04:30:06,083 [INFO] error: 0.1825 level_error:0.1825
+2025-05-08 04:30:06,083 [INFO] loss: 0.5813 level_loss:0.5813
+2025-05-08 04:30:11,132 [INFO] [val phase]
+2025-05-08 04:30:11,132 [INFO] error: 0.8463 level_error:0.8463
+2025-05-08 04:30:11,132 [INFO] loss: 2.8686 level_loss:2.8686
+2025-05-08 04:30:11,132 [INFO] Best Epoch: 44
+2025-05-08 04:30:11,844 [INFO] Checkpoint saved to facebase/results/DRUnder_256x256_resnet50_imagenet_coral/split4/checkpoint_49.pth
+2025-05-08 04:30:11,844 [INFO] Training complete in 38m 2s
+2025-05-08 04:30:11,844 [INFO] Best epoch: 44
+2025-05-08 04:32:33,735 [INFO] Model evalution:
+2025-05-08 04:32:33,735 [INFO] [trn set]
+2025-05-08 04:32:33,735 [INFO] level (mae): 0.2158
+2025-05-08 04:32:33,735 [INFO] [val set]
+2025-05-08 04:32:33,735 [INFO] level (mae): 0.8344
+2025-05-08 04:32:33,735 [INFO] [tst set]
+2025-05-08 04:32:33,735 [INFO] level (mae): 0.5402
